@@ -9,4 +9,16 @@
     <string name="newUsernameTitle">Create Username:</string>
     <string name="newPasswordTitle">Create Password:</string>
     <string name="createAccountBtn">Create Account</string>
+
+    <string-array name="projectTitles">
+        <item>Project 1</item>
+        <item>Project 2</item>
+        <item>Project 3</item>
+    </string-array>
+
+    <string-array name="projectDescriptions">
+        <item>Hip Hop</item>
+        <item>Jazz</item>
+        <item>Rock</item>
+    </string-array>
 </resources>

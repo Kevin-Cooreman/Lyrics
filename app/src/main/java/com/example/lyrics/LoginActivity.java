@@ -14,10 +14,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     }
 
-    /*public void onBtnLoginClicked(View Caller) {
-        Intent intent = new Intent(this, OrderConfirmationActivity.class);
+    public void onBtnLoginClicked(View Caller) {
+        Intent intent = new Intent(this, ProjectsListActivity.class);
         startActivity(intent);
-    }*/
+    }
 
     public void onBtnRegisterClicked(View Caller) {
         Intent intent = new Intent(this, RegisterActivity.class);
