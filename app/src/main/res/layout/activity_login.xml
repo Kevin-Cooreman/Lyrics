@@ -47,7 +47,6 @@
         android:ems="10"
         android:hint="@string/usernameInput"
         android:inputType="textPersonName"
-        android:text="@string/usernameInput"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UsernameTitle" />
 
