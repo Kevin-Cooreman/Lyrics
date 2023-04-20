@@ -6,4 +6,7 @@
     <string name="passwordInput">Password</string>
     <string name="loginButton">Login</string>
     <string name="registerButton">Register first</string>
+    <string name="newUsernameTitle">Create Username:</string>
+    <string name="newPasswordTitle">Create Password:</string>
+    <string name="createAccountBtn">Create Account</string>
 </resources>
