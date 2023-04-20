@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Lyrics</string>
     <string name="usernameTitle">Username:</string>
-    <string name="usernameInput"></string>
+    <string name="usernameInput">Username</string>
     <string name="passwordTitle">Password:</string>
-    <string name="passwordInput"></string>
+    <string name="passwordInput">Password</string>
     <string name="loginButton">Login</string>
 </resources>
