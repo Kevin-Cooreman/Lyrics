@@ -28,13 +28,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onBtnLoginClicked(View Caller) {
-        Intent intent = new Intent(this, ProjectsListActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, ProjectsListActivity.class);
+        //startActivity(intent);
         EditText usernameEditText = findViewById(R.id.usernameInput);
         String username = usernameEditText.getText().toString();
         EditText passwordEditText = findViewById(R.id.passwordInput);
-        String password = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+
+
+        //username & password debug
+        //TextView usernameView = (TextView) findViewById(R.id.usernameView);
+        //usernameView.setText(username);
+        //TextView passwordView = (TextView) findViewById(R.id.passwordView);
+        //passwordView.setText(password);
+        //
+
         requestLogin(username, password);
+
     }
 
     public void onBtnRegisterClicked(View Caller) {
@@ -43,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void requestLogin(String username, String password) {
-        String MODIFIED_LOGIN_URL = LOGIN_URL + "/" + username + "/" + password;
+        String MODIFIED_LOGIN_URL = LOGIN_URL + username + "/" + password;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonArrayRequest queueRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -52,9 +62,15 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-// iteration 1
-                        TextView txtView = (TextView) findViewById(R.id.tempText);
-                        txtView.setText(response.toString());
+                        if( response.length() != 0){
+                            successfulLogin();
+                        }
+                        else{
+                            TextView theView = (TextView) findViewById(R.id.tempText);
+                            String loginErrorMessage = getString(R.string.loginErrorMessage);
+                            theView.setText(loginErrorMessage);
+                            theView.setVisibility(View.VISIBLE);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -64,5 +80,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
         requestQueue.add(queueRequest);
+    }
+
+    public void successfulLogin(){
+        Intent intent = new Intent(this, ProjectsListActivity.class);
+        startActivity(intent);
     }
 }

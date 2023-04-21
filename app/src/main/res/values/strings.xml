@@ -10,6 +10,8 @@
     <string name="newPasswordTitle">Create Password:</string>
     <string name="createAccountBtn">Create Account</string>
 
+    <string name="loginErrorMessage">Incorrect username password combination.</string>
+
     <string-array name="projectTitles">
         <item>Project 1</item>
         <item>Project 2</item>
