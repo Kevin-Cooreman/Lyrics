@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         if( response.length() != 0){
                             successfulLogin();
+
                         }
                         else{
                             TextView theView = (TextView) findViewById(R.id.tempText);
