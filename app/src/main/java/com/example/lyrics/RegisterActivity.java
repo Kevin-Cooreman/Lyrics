@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,6 +32,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        TextView theView = (TextView) findViewById(R.id.tempTextRegister);
+        theView.setVisibility(View.INVISIBLE);
+
     }
 
     public void onBtnCreateAccountClicked(View Caller) {
@@ -50,12 +54,16 @@ public class RegisterActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if( response.length() != 0){
-                            successfulRegister();
+                        if( response.equals("[]")){
+                            TextView theView = (TextView) findViewById(R.id.tempTextRegister);
+                            theView.setText("het werkt");
+                            theView.setVisibility(View.VISIBLE);
                         }
-                        TextView theView = (TextView) findViewById(R.id.tempTextRegister);
-                        theView.setText(response);
-                        theView.setVisibility(View.VISIBLE);
+                        else {
+                            TextView theView = (TextView) findViewById(R.id.tempTextRegister);
+                            theView.setText(Integer.toString(response.length()));
+                            theView.setVisibility(View.VISIBLE);
+                        }
 
                     }
                 },
