@@ -9,13 +9,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 
 public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapter.MyViewHolder> {
 
-    String title[], description[];
+    ArrayList<String> title = new ArrayList<>();
+    ArrayList<String> description = new ArrayList<>();
+
     Context context;
 
-    public ProjectsListAdapter(Context ct, String titles[], String descriptions[]){
+    public ProjectsListAdapter(Context ct, ArrayList<String> titles, ArrayList<String> descriptions){
         context = ct;
         title = titles;
         description = descriptions;
@@ -32,14 +36,14 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.myText1.setText(title[position]);
-        holder.myText2.setText(description[position]);
+        holder.myText1.setText(title.get(position));
+        holder.myText2.setText(description.get(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return title.length;
+        return title.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

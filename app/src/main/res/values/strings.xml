@@ -9,6 +9,7 @@
     <string name="newUsernameTitle">Create Username:</string>
     <string name="newPasswordTitle">Create Password:</string>
     <string name="createAccountBtn">Create Account</string>
+    <string name="addProjectBtn">+</string>
 
     <string name="loginErrorMessage">Incorrect username password combination.</string>
 
