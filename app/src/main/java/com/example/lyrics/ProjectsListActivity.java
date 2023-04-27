@@ -17,6 +17,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,8 @@ public class ProjectsListActivity extends AppCompatActivity {
         requestProjects();
         requestDescriptions();
 
+
+
         recyclerView = findViewById(R.id.ProjectListView);
 
         ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(this, ProjectTitles, ProjectDescriptions);
@@ -54,13 +57,24 @@ public class ProjectsListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        for (int i=0;i<response.length();i++){
+                        for (int i=0;i<response.length();i++) {
 
+                            JSONObject jsonobject = null;
                             try {
-                                ProjectTitles.add(response.getString(i));
+                                jsonobject = response.getJSONObject(i);
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
+
+                            String name;
+                            try {
+                                name = jsonobject.getString("projectName");
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            ProjectTitles.add(name);
+
                         }
                     }
                 },
@@ -85,12 +99,23 @@ public class ProjectsListActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
 
                         for (int i=0;i<response.length();i++){
-
+                            JSONObject jsonobject = null;
                             try {
-                                ProjectDescriptions.add(response.getString(i));
+                                jsonobject = response.getJSONObject(i);
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
+
+                            String description;
+                            try {
+                                description = jsonobject.getString("description");
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+
+
+                            ProjectDescriptions.add(description);
+
                         }
                     }
                 },
