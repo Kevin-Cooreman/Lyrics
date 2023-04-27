@@ -12,6 +12,8 @@
     <string name="addProjectBtn">+</string>
 
     <string name="loginErrorMessage">Incorrect username password combination.</string>
+    <string name="usernameAlreadyExists">Username already exists! Choose something else</string>
+    <string name="debug">kaolo je zit hier</string>
 
     <string-array name="projectTitles">
         <item>Project 1</item>
