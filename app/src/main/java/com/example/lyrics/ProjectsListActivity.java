@@ -62,14 +62,16 @@ public class ProjectsListActivity extends AppCompatActivity {
                             JSONObject jsonobject = null;
                             try {
                                 jsonobject = response.getJSONObject(i);
-                            } catch (JSONException e) {
+                            }
+                            catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
 
                             String name;
                             try {
                                 name = jsonobject.getString("projectName");
-                            } catch (JSONException e) {
+                            }
+                            catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
 

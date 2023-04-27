@@ -17,6 +17,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -63,7 +65,38 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         if( response.length() != 0){
-                            successfulLogin();
+
+                            for (int i=0;i<response.length();i++) {
+
+                                JSONObject jsonobject = null;
+                                try {
+                                    jsonobject = response.getJSONObject(i);
+                                }
+                                catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+
+
+                                try {
+
+                                    int id = jsonobject.getInt("id");
+                                    successfulLogin(id);
+                                }
+                                catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+
+
+                            }
+                            //try {
+                                //get id
+
+
+                                //successfulLogin(response.getInt(0));
+                            //}
+                            //catch (JSONException e) {
+                                //throw new RuntimeException(e);
+                            //}
 
                         }
                         else{
@@ -83,8 +116,9 @@ public class LoginActivity extends AppCompatActivity {
         requestQueue.add(queueRequest);
     }
 
-    public void successfulLogin(){
+    public void successfulLogin(int ID){
         Intent intent = new Intent(this, ProjectsListActivity.class);
+        intent.putExtra("user_id", ID);
         startActivity(intent);
     }
 }
