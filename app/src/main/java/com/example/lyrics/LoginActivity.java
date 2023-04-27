@@ -65,9 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         if( response.length() != 0){
-
                             for (int i=0;i<response.length();i++) {
-
                                 JSONObject jsonobject = null;
                                 try {
                                     jsonobject = response.getJSONObject(i);
@@ -75,29 +73,14 @@ public class LoginActivity extends AppCompatActivity {
                                 catch (JSONException e) {
                                     throw new RuntimeException(e);
                                 }
-
-
                                 try {
-
                                     int id = jsonobject.getInt("id");
                                     successfulLogin(id);
                                 }
                                 catch (JSONException e) {
                                     throw new RuntimeException(e);
                                 }
-
-
                             }
-                            //try {
-                                //get id
-
-
-                                //successfulLogin(response.getInt(0));
-                            //}
-                            //catch (JSONException e) {
-                                //throw new RuntimeException(e);
-                            //}
-
                         }
                         else{
                             TextView theView = (TextView) findViewById(R.id.tempText);
@@ -118,7 +101,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void successfulLogin(int ID){
         Intent intent = new Intent(this, ProjectsListActivity.class);
-        intent.putExtra("user_id", ID);
+        intent.putExtra("userID", ID);
+        intent.setAction(Intent.ACTION_SEND);
+
         startActivity(intent);
     }
 }

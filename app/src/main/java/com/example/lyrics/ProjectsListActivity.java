@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -28,12 +29,17 @@ public class ProjectsListActivity extends AppCompatActivity {
 
     String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectProjectsFromUser/";
     String DescriptionsURL = "https://studev.groept.be/api/a22pt108/selectDescriptionsFromUser/";
-    String UserID = "4";
+    int UserID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects_list);
+        //get the userID from the loginActivity
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        int UserID = getIntent().getIntExtra("UserID", -1);
+        setUserID(UserID);
         requestProjects();
         requestDescriptions();
 
@@ -45,6 +51,8 @@ public class ProjectsListActivity extends AppCompatActivity {
         recyclerView.setAdapter(projectsListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    public void setUserID(int UserID){this.UserID = UserID;}
 
     private void requestProjects() {
         String MODIFIED_Projects_URL = ProjectsURL + UserID;
