@@ -18,9 +18,12 @@
             android:exported="false" />
         <activity
             android:name=".ProjectActivity"
+            android:label="ProjectList"
+            android:parentActivityName=".ProjectsListActivity"
             android:exported="false" />
         <activity
             android:name=".ProjectsListActivity"
+            android:parentActivityName=".ProjectsListActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"
