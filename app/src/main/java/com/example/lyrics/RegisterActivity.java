@@ -42,7 +42,14 @@ public class RegisterActivity extends AppCompatActivity {
         String username = usernameEditText.getText().toString();
         EditText passwordEditText = findViewById(R.id.newPasswordInput);
         String password = passwordEditText.getText().toString();
-        requestRegister(username, password);
+        if(username.length() == 0 || password.length() == 0){
+            TextView theView = (TextView) findViewById(R.id.tempTextRegister);
+            theView.setText("fill in a username and password first");
+            theView.setVisibility(View.VISIBLE);
+        }
+        else {
+            requestRegister(username, password);
+        }
     }
 
     private void requestRegister(String username, String password) {
@@ -55,14 +62,24 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if( response.equals("[]")){
-                            TextView theView = (TextView) findViewById(R.id.tempTextRegister);
-                            theView.setText("het werkt");
-                            theView.setVisibility(View.VISIBLE);
+                            //debug
+                            //TextView theView = (TextView) findViewById(R.id.tempTextRegister);
+                            //theView.setText("het werkt");
+                            //theView.setVisibility(View.VISIBLE);
+                            successfulRegister();
                         }
                         else {
                             TextView theView = (TextView) findViewById(R.id.tempTextRegister);
-                            theView.setText(Integer.toString(response.length()));
-                            theView.setVisibility(View.VISIBLE);
+                            //debug
+                            //theView.setText(Integer.toString(response.length()));
+                            if(response.contains("Duplicate entry")){
+                                theView.setText("Username already taken");
+                                theView.setVisibility(View.VISIBLE);
+                            }
+                            else{
+                                theView.setText("Something bad happened");
+                                theView.setVisibility(View.VISIBLE);
+                            }
                         }
 
                     }
@@ -71,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         TextView theView = (TextView) findViewById(R.id.tempTextRegister);
-                        String loginErrorMessage = "Mislukt, is de username miss al in gebruik?";
+                        String loginErrorMessage = "unable to connect to the api";
                         theView.setText(loginErrorMessage);
                         theView.setVisibility(View.VISIBLE);
                     }
