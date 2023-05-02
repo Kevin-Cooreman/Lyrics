@@ -22,8 +22,8 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     private void getData(){
-        if(getIntent().hasExtra("title") && getIntent().hasExtra("description")){
-            projectTitle = getIntent().getStringExtra("title");
+        if(getIntent().hasExtra("projectName") && getIntent().hasExtra("description")){
+            projectTitle = getIntent().getStringExtra("projectName");
             projectDescription = getIntent().getStringExtra("description");
 
         }

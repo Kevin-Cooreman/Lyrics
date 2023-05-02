@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,12 +26,14 @@ import java.util.ArrayList;
 
 public class ProjectsListActivity extends AppCompatActivity {
     ArrayList<String> ProjectTitles = new ArrayList<>();
-    ArrayList<String>ProjectDescriptions = new ArrayList<>();
+    ArrayList<String> ProjectDescriptions = new ArrayList<>();
 
     String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectProjectsFromUser/";
     String DescriptionsURL = "https://studev.groept.be/api/a22pt108/selectDescriptionsFromUser/";
     int UserID;
     RecyclerView recyclerView;
+
+    Context context = this;
 
 
     @Override
@@ -48,6 +51,8 @@ public class ProjectsListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.ProjectListView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+
 
 
 
@@ -136,7 +141,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                             ProjectDescriptions.add(description);
 
                         }
-                        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(ProjectTitles, ProjectDescriptions);
+                        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(context, ProjectTitles, ProjectDescriptions);
                         recyclerView.setAdapter(projectsListAdapter);
                     }
                 },

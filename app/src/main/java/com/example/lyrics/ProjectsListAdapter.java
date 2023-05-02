@@ -1,6 +1,7 @@
 package com.example.lyrics;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,10 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
     ArrayList<String> descriptions;
     Context context;
 
-    public ProjectsListAdapter(ArrayList<String> titles, ArrayList<String> descriptions){
+    public ProjectsListAdapter(Context context,ArrayList<String> titles, ArrayList<String> descriptions){
         this.titles = titles;
         this.descriptions = descriptions;
+        this.context = context;
 
     }
 
@@ -39,6 +41,16 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
 
         holder.myText1.setText(title);
         holder.myText2.setText(description);
+
+        holder.ProjectListLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ProjectActivity.class);
+                intent.putExtra("projectName",title);
+                intent.putExtra("description",description);
+                context.startActivity(intent);
+            }
+        });
     }
 
 
