@@ -14,16 +14,9 @@
         android:theme="@style/Theme.Lyrics"
         tools:targetApi="31">
         <activity
-            android:name=".TestProjectsActivity"
-            android:exported="false" />
+            android:name=".ProjectActivity" />
         <activity
-            android:name=".ProjectActivity"
-            android:label="ProjectList"
-            android:parentActivityName=".ProjectsListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProjectsListActivity"
-            android:exported="false" />
+            android:name=".ProjectsListActivity" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
