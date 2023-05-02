@@ -90,8 +90,8 @@ public class ProjectsListActivity extends AppCompatActivity {
                             ProjectTitles.add(name);
 
                         }
-                        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(ProjectTitles, ProjectDescriptions);
-                        recyclerView.setAdapter(projectsListAdapter);
+                        //ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(ProjectTitles, ProjectDescriptions);
+                        //recyclerView.setAdapter(projectsListAdapter);
                     }
                 },
                 new Response.ErrorListener() {
