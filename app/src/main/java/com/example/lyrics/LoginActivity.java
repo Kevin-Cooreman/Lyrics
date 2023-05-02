@@ -101,9 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void successfulLogin(int ID){
         Intent intent = new Intent(this, ProjectsListActivity.class);
-        intent.putExtra("userID", ID);
-        intent.setAction(Intent.ACTION_SEND);
-
+        intent.putExtra("UserID", ID);
         startActivity(intent);
     }
 }

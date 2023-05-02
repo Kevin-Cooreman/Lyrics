@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -37,8 +38,10 @@ public class ProjectsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects_list);
         //get the userID from the loginActivity
-        Intent loginIntent = new Intent(this, LoginActivity.class);
         int UserID = getIntent().getIntExtra("UserID", -1);
+
+        Log.d("ProjectsListActivity", "UserID: " + UserID);
+
         setUserID(UserID);
         requestProjects();
         requestDescriptions();
@@ -65,7 +68,9 @@ public class ProjectsListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        for (int i=0;i<response.length();i++) {
+                        Log.d("ProjectsListActivity", "Whole titles response: " + response.toString());
+
+                        for (int i=0 ;i<response.length(); i++) {
 
                             JSONObject jsonobject = null;
                             try {
@@ -78,6 +83,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                             String name;
                             try {
                                 name = jsonobject.getString("projectName");
+                                Log.d("ProjectsListActivity", "Project title: " + name);
                             }
                             catch (JSONException e) {
                                 throw new RuntimeException(e);
@@ -108,6 +114,8 @@ public class ProjectsListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
 
+                        Log.d("ProjectsListActivity", "Whole description response: " + response.toString());
+
                         for (int i=0;i<response.length();i++){
                             JSONObject jsonobject = null;
                             try {
@@ -119,6 +127,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                             String description;
                             try {
                                 description = jsonobject.getString("description");
+                                Log.d("ProjectsListActivity", "Project description: " + description);
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
