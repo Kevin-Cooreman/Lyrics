@@ -26,11 +26,11 @@ import java.util.ArrayList;
 public class ProjectsListActivity extends AppCompatActivity {
     ArrayList<String> ProjectTitles = new ArrayList<>();
     ArrayList<String>ProjectDescriptions = new ArrayList<>();
-    RecyclerView recyclerView;
 
     String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectProjectsFromUser/";
     String DescriptionsURL = "https://studev.groept.be/api/a22pt108/selectDescriptionsFromUser/";
     int UserID;
+    RecyclerView recyclerView;
 
 
     @Override
@@ -39,20 +39,18 @@ public class ProjectsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_projects_list);
         //get the userID from the loginActivity
         int UserID = getIntent().getIntExtra("UserID", -1);
-
         Log.d("ProjectsListActivity", "UserID: " + UserID);
-
         setUserID(UserID);
+
         requestProjects();
         requestDescriptions();
 
-
-
         recyclerView = findViewById(R.id.ProjectListView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
-        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(this, ProjectTitles, ProjectDescriptions);
-        recyclerView.setAdapter(projectsListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
     }
 
     public void setUserID(int UserID){this.UserID = UserID;}
@@ -92,6 +90,8 @@ public class ProjectsListActivity extends AppCompatActivity {
                             ProjectTitles.add(name);
 
                         }
+                        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(ProjectTitles, ProjectDescriptions);
+                        recyclerView.setAdapter(projectsListAdapter);
                     }
                 },
                 new Response.ErrorListener() {
@@ -136,6 +136,8 @@ public class ProjectsListActivity extends AppCompatActivity {
                             ProjectDescriptions.add(description);
 
                         }
+                        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(ProjectTitles, ProjectDescriptions);
+                        recyclerView.setAdapter(projectsListAdapter);
                     }
                 },
                 new Response.ErrorListener() {
