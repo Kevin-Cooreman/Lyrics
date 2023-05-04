@@ -19,11 +19,10 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
     ArrayList<String> descriptions;
     Context context;
 
-    public ProjectsListAdapter(Context context,ArrayList<String> titles, ArrayList<String> descriptions){
-        this.titles = titles;
-        this.descriptions = descriptions;
+    public ProjectsListAdapter(Context context,ArrayList<String> Titles, ArrayList<String> Descriptions){
+        this.titles = Titles;
+        this.descriptions = Descriptions;
         this.context = context;
-
     }
 
     @NonNull
@@ -36,6 +35,7 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        // holder for project list
         String title = titles.get(position);
         String description = descriptions.get(position);
 
@@ -51,6 +51,7 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
                 context.startActivity(intent);
             }
         });
+
     }
 
 
@@ -60,6 +61,7 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
+        //viewHolder for projectList
 
         TextView myText1, myText2;
         ConstraintLayout ProjectListLayout;
@@ -69,8 +71,6 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
             myText1 = itemView.findViewById(R.id.lblTitle);
             myText2 = itemView.findViewById(R.id.lblDescription);
             ProjectListLayout = itemView.findViewById(R.id.ProjectListView);
-
-
         }
     }
 }

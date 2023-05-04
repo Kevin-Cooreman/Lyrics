@@ -52,10 +52,6 @@ public class ProjectsListActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-
-
-
-
     }
 
     public void setUserID(int UserID){this.UserID = UserID;}

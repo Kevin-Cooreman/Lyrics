@@ -1,6 +1,10 @@
 package com.example.lyrics;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +15,7 @@ public class ProjectActivity extends AppCompatActivity {
 
     TextView title;
     String projectTitle;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +28,12 @@ public class ProjectActivity extends AppCompatActivity {
         Log.d("dit is de project instantie: ", project.toString());
         title.setVisibility(View.VISIBLE);
 
+
+        recyclerView = findViewById(R.id.ProjectView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        ProjectAdapter projectAdapter = new ProjectAdapter(this,2);
+        recyclerView.setAdapter(projectAdapter);
 
         getData();
         setData();

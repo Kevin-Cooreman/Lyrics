@@ -10,6 +10,7 @@
     <string name="newPasswordTitle">Create Password:</string>
     <string name="createAccountBtn">Create Account</string>
     <string name="addProjectBtn">+</string>
+    <string name="textEditor">Start Writing</string>
 
     <string name="loginErrorMessage">Incorrect username password combination.</string>
     <string name="usernameAlreadyExists">Username already exists! Choose something else</string>
@@ -19,15 +20,12 @@
     <string name="newProjectDescriptionText">Description</string>
     <string name="CreateNewProjectBtn">Create</string>
 
-    <string-array name="projectTitles">
-        <item>Project 1</item>
-        <item>Project 2</item>
-        <item>Project 3</item>
+    <string-array name="Sections">
+        <item>Chorus</item>
+        <item>Pre-Chorus</item>
+        <item>Post-Chorus</item>
+        <item>Verse</item>
+        <item>Bridge</item>
     </string-array>
 
-    <string-array name="projectDescriptions">
-        <item>Hip Hop</item>
-        <item>Jazz</item>
-        <item>Rock</item>
-    </string-array>
 </resources>
