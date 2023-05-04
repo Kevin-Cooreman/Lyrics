@@ -7,15 +7,14 @@ import android.widget.Toast;
 
 public class ProjectActivity extends AppCompatActivity {
 
-    TextView title, description;
-    String projectTitle, projectDescription;
+    TextView title;
+    String projectTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
 
         title = findViewById(R.id.ProjectTitleView);
-        description = findViewById(R.id.ProjectDescriptionView);
 
         getData();
         setData();
@@ -24,7 +23,6 @@ public class ProjectActivity extends AppCompatActivity {
     private void getData(){
         if(getIntent().hasExtra("projectName") && getIntent().hasExtra("description")){
             projectTitle = getIntent().getStringExtra("projectName");
-            projectDescription = getIntent().getStringExtra("description");
 
         }
         else{
@@ -34,6 +32,5 @@ public class ProjectActivity extends AppCompatActivity {
 
     private void setData(){
         title.setText(projectTitle);
-        description.setText(projectDescription);
     }
 }
