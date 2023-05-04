@@ -156,6 +156,7 @@ public class ProjectsListActivity extends AppCompatActivity {
 
     public void onBtnCreateNewProject(View Caller) {
         Intent intent = new Intent(this, CreateNewProjectActivity.class);
+        intent.putExtra("UserID", UserID);
         startActivity(intent);
     }
 }

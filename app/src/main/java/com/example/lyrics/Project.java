@@ -24,6 +24,24 @@ public class Project implements Parcelable {
         blockListTypes.add("type");
     }
 
+    //getters
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ArrayList<String> getBlockListTypes() {
+        return blockListTypes;
+    }
+
+    public ArrayList<String> getBlockListLyrics() {
+        return blockListLyrics;
+    }
+
+
 
     @NonNull
     @Override
