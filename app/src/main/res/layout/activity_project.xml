@@ -28,4 +28,24 @@
         app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
         app2:layout_constraintTop_toBottomOf="@+id/ProjectTitleView" />
+
+    <Button
+        android:id="@+id/SaveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/SaveBtn"
+        app2:layout_constraintBottom_toBottomOf="@+id/ProjectView"
+        app2:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/AddBlockBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/addProjectBtn"
+        app2:layout_constraintBottom_toBottomOf="@+id/ProjectView"
+        app2:layout_constraintEnd_toStartOf="@+id/SaveBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,13 +19,17 @@
     <string name="newProjectNameText">New Project Title</string>
     <string name="newProjectDescriptionText">Description</string>
     <string name="CreateNewProjectBtn">Create</string>
+    <string name="RecordBtn">Record</string>
+    <string name="SaveBtn">Save</string>
 
     <string-array name="Sections">
+        <item>Intro</item>
         <item>Chorus</item>
         <item>Pre-Chorus</item>
         <item>Post-Chorus</item>
         <item>Verse</item>
         <item>Bridge</item>
+        <item>Outro</item>
     </string-array>
 
 </resources>
