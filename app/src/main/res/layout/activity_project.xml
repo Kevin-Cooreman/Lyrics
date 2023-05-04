@@ -6,26 +6,4 @@
     xmlns:app="http://schemas.android   .com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProjectActivity">
-
-    <TextView
-        android:id="@+id/ProjectDescriptionView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/ProjectTitleView" />
-
-    <TextView
-        android:id="@+id/ProjectTitleView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        android:textSize="20sp"
-        app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".ProjectActivity"/>
