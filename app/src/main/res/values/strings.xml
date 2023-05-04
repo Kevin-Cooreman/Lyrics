@@ -15,6 +15,10 @@
     <string name="usernameAlreadyExists">Username already exists! Choose something else</string>
     <string name="debug">kaolo je zit hier</string>
 
+    <string name="newProjectNameText">New Project Title</string>
+    <string name="newProjectDescriptionText">Description</string>
+    <string name="CreateNewProjectBtn">Create</string>
+
     <string-array name="projectTitles">
         <item>Project 1</item>
         <item>Project 2</item>

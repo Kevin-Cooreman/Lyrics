@@ -153,4 +153,9 @@ public class ProjectsListActivity extends AppCompatActivity {
                 });
         requestQueue.add(queueRequest);
     }
+
+    public void onBtnCreateNewProject(View Caller) {
+        Intent intent = new Intent(this, CreateNewProjectActivity.class);
+        startActivity(intent);
+    }
 }
