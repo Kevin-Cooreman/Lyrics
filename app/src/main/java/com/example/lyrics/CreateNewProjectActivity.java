@@ -3,9 +3,12 @@ package com.example.lyrics;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,11 +40,68 @@ public class CreateNewProjectActivity extends AppCompatActivity {
 
     }
 
+    /*
+    //TEMP RECORD BUTTON
+    //
+    boolean recording = false;
+    MediaRecorder mediaRecorder = new MediaRecorder();
+
+    public void onBtnRecordClicked(View Caller){
+        if (recording){
+            //stop recording
+            stopRecording(mediaRecorder);
+            recording = false;
+        }
+        else{
+            //start recording
+            startRecording(mediaRecorder);
+            recording = true;
+        }
+    }
+
+    public void startRecording(MediaRecorder mediaRecorder){
+
+
+        // Set audio source and output format
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+
+        // Set output file name and path
+        String fileName = "record_" + System.currentTimeMillis() + ".3gp";
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName;
+        mediaRecorder.setOutputFile(filePath);
+
+        // Set audio encoder and quality
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mediaRecorder.setAudioEncodingBitRate(16 * 44100);
+        mediaRecorder.setAudioSamplingRate(44100);
+
+        try {
+            mediaRecorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mediaRecorder.start();
+        Button recordButton = findViewById(R.id.recordButton);
+        recordButton.setText("Stop Recording");
+    }
+    public void stopRecording(MediaRecorder mediaRecorder){
+        mediaRecorder.stop();
+        mediaRecorder.release();
+        Button recordButton = findViewById(R.id.recordButton);
+        recordButton.setText("Record Audio");
+    }
+    */
+    //
+    //
+    //
+
     public void setUserID(int UserID){this.userID = UserID;}
 
     public void setProject(Project project){this.project = project;}
 
-    public void onBtnLoginClicked(View Caller) {
+    public void onBtnCreateProjectClicked(View Caller) {
 
         EditText titleEditText = findViewById(R.id.newProjectNameTextInput);
         String title = titleEditText.getText().toString();

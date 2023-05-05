@@ -25,11 +25,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ProjectsListActivity extends AppCompatActivity {
+    ArrayList<Integer> ProjectID = new ArrayList<>();
     ArrayList<String> ProjectTitles = new ArrayList<>();
     ArrayList<String> ProjectDescriptions = new ArrayList<>();
 
-    String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectProjectsFromUser/";
-    String DescriptionsURL = "https://studev.groept.be/api/a22pt108/selectDescriptionsFromUser/";
+    String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectAllProjectsFromUser/";
+    //String DescriptionsURL = "https://studev.groept.be/api/a22pt108/selectDescriptionsFromUser/";
     int UserID;
     RecyclerView recyclerView;
 
@@ -46,7 +47,7 @@ public class ProjectsListActivity extends AppCompatActivity {
         setUserID(UserID);
 
         requestProjects();
-        requestDescriptions();
+        //requestDescriptions();
 
         recyclerView = findViewById(R.id.ProjectListView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -67,7 +68,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        Log.d("ProjectsListActivity", "Whole titles response: " + response.toString());
+                        Log.d("ProjectsListActivity", " response: " + response.toString());
 
                         for (int i=0 ;i<response.length(); i++) {
 
@@ -80,19 +81,26 @@ public class ProjectsListActivity extends AppCompatActivity {
                             }
 
                             String name;
+                            int id;
+                            String description;
                             try {
+                                id = jsonobject.getInt("projectID");
                                 name = jsonobject.getString("projectName");
-                                Log.d("ProjectsListActivity", "Project title: " + name);
+                                description = jsonobject.getString("description");
+
+                                Log.d("ProjectsListActivity", "Project info: " + id + ", " + name + ", " + description);
                             }
                             catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
 
                             ProjectTitles.add(name);
+                            ProjectDescriptions.add(description);
+                            ProjectID.add(id);
 
                         }
-                        //ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(ProjectTitles, ProjectDescriptions);
-                        //recyclerView.setAdapter(projectsListAdapter);
+                        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(context, ProjectTitles, ProjectDescriptions, ProjectID);
+                        recyclerView.setAdapter(projectsListAdapter);
                     }
                 },
                 new Response.ErrorListener() {
@@ -103,7 +111,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                 });
         requestQueue.add(queueRequest);
     }
-
+/**
     private void requestDescriptions() {
         String MODIFIED_Projects_URL = DescriptionsURL + UserID;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -149,7 +157,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                 });
         requestQueue.add(queueRequest);
     }
-
+*/
     public void onBtnCreateNewProject(View Caller) {
         Intent intent = new Intent(this, CreateNewProjectActivity.class);
         intent.putExtra("UserID", UserID);

@@ -24,7 +24,7 @@ public class ProjectActivity extends AppCompatActivity {
         Project project = (Project) getIntent().getParcelableExtra("Project");
 
         title =  (TextView) findViewById(R.id.ProjectTitleView);
-        title.setText(project.toString());
+        title.setText(project.getTitle());
         Log.d("dit is de project instantie: ", project.toString());
         title.setVisibility(View.VISIBLE);
 
@@ -34,6 +34,8 @@ public class ProjectActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         ProjectAdapter projectAdapter = new ProjectAdapter(this,1);
         recyclerView.setAdapter(projectAdapter);
+
+
 
         getData();
         setData();
