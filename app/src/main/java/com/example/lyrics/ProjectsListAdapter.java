@@ -2,6 +2,7 @@ package com.example.lyrics;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
         String description = descriptions.get(position);
         int id = projectIDs.get(position);
 
+
         holder.myText1.setText(title);
         holder.myText2.setText(description);
 
@@ -53,6 +55,8 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
                 //intent.putExtra("projectName",title);
                 //intent.putExtra("description",description);
                 //intent.putExtra("projectID", id);
+
+                Log.d("ProjectListAdapter", "The id of the clicked project is: " +id);
 
                 Project project = new Project(id, view.getContext());
                 intent.putExtra("Project", project);

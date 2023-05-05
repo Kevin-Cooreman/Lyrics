@@ -47,7 +47,6 @@ public class ProjectsListActivity extends AppCompatActivity {
         setUserID(UserID);
 
         requestProjects();
-        //requestDescriptions();
 
         recyclerView = findViewById(R.id.ProjectListView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -88,7 +87,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                                 name = jsonobject.getString("projectName");
                                 description = jsonobject.getString("description");
 
-                                Log.d("ProjectsListActivity", "Project info: " + id + ", " + name + ", " + description);
+                                Log.d("ProjectsListActivity", "ProjectList of user: " + id + ", " + name + ", " + description);
                             }
                             catch (JSONException e) {
                                 throw new RuntimeException(e);
@@ -111,53 +110,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                 });
         requestQueue.add(queueRequest);
     }
-/**
-    private void requestDescriptions() {
-        String MODIFIED_Projects_URL = DescriptionsURL + UserID;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest queueRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                MODIFIED_Projects_URL,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
 
-                        Log.d("ProjectsListActivity", "Whole description response: " + response.toString());
-
-                        for (int i=0;i<response.length();i++){
-                            JSONObject jsonobject = null;
-                            try {
-                                jsonobject = response.getJSONObject(i);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                            String description;
-                            try {
-                                description = jsonobject.getString("description");
-                                Log.d("ProjectsListActivity", "Project description: " + description);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-
-
-                            ProjectDescriptions.add(description);
-
-                        }
-                        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(context, ProjectTitles, ProjectDescriptions);
-                        recyclerView.setAdapter(projectsListAdapter);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-        requestQueue.add(queueRequest);
-    }
-*/
     public void onBtnCreateNewProject(View Caller) {
         Intent intent = new Intent(this, CreateNewProjectActivity.class);
         intent.putExtra("UserID", UserID);

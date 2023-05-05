@@ -25,7 +25,7 @@ public class ProjectActivity extends AppCompatActivity {
 
         title =  (TextView) findViewById(R.id.ProjectTitleView);
         title.setText(project.getTitle());
-        Log.d("dit is de project instantie: ", project.toString());
+        Log.d("Project toString: ", project.toString());
         title.setVisibility(View.VISIBLE);
 
 
@@ -47,7 +47,7 @@ public class ProjectActivity extends AppCompatActivity {
 
         }
         else{
-            Toast.makeText(this,"No Data",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"No Data",Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -28,8 +28,8 @@ public class Project implements Parcelable {
     private String description;
     private int projectID;
     private int ownerID;
-    private int blockText;
-    private int blockTypes;
+    private String blockText;
+    private String blockTypes;
     private ArrayList<String> blockListTypes;
     private ArrayList<String> blockListLyrics;
     private String requestWithIdUrl = "https://studev.groept.be/api/a22pt108/selectProjectWithID/";
@@ -74,11 +74,11 @@ public class Project implements Parcelable {
         return ownerID;
     }
 
-    public int getBlockText() {
+    public String getBlockText() {
         return blockText;
     }
 
-    public int getBlockTypes() {
+    public String getBlockTypes() {
         return blockTypes;
     }
 
@@ -102,11 +102,11 @@ public class Project implements Parcelable {
         this.ownerID = ownerID;
     }
 
-    public void setBlockText(int blockText) {
+    public void setBlockText(String blockText) {
         this.blockText = blockText;
     }
 
-    public void setBlockTypes(int blockTypes) {
+    public void setBlockTypes(String blockTypes) {
         this.blockTypes = blockTypes;
     }
 
@@ -145,16 +145,16 @@ public class Project implements Parcelable {
                                 String projectName;
                                 String description;
                                 int ownerID;
-                                //String blockText;
-                                //String blockTypes;
+                                String blockText;
+                                String blockTypes;
 
                                 try {
                                     projectID = jsonobject.getInt("projectID");
                                     projectName = jsonobject.getString("projectName");
                                     description = jsonobject.getString("description");
                                     ownerID = jsonobject.getInt("ownerID");
-                                    //blockText = jsonobject.getString("blockText");
-                                    //blockTypes = jsonobject.getString("blockTypes");
+                                    blockText = jsonobject.getString("blockText");
+                                    blockTypes = jsonobject.getString("blockTypes");
 
                                 }
                                 catch (JSONException e) {
@@ -164,6 +164,9 @@ public class Project implements Parcelable {
                                 setTitle(projectName);
                                 setDescription(description);
                                 setOwnerID(ownerID);
+                                setBlockText(blockText);
+                                setBlockTypes(blockTypes);
+
                             }
                         }
                         else{
@@ -183,7 +186,7 @@ public class Project implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "title: " + title + ", description: " + description;
+        return "ownerID: "+ownerID +", projectID: "+ projectID + ", title: "+title + ", description: "+ description +", blockText: " + blockText +", blockTypes: " + blockTypes;
     }
 
     //all things necessary for Parcelable
