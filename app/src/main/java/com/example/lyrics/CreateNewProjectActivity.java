@@ -16,8 +16,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,7 +31,9 @@ import java.util.Map;
 public class CreateNewProjectActivity extends AppCompatActivity {
 
     String addProjectUrl = "https://studev.groept.be/api/a22pt108/addNewProject/";
+    String getLatestProjectFromUserUrl = "https://studev.groept.be/api/a22pt108/getLatestProjectFromUser/";
     int userID;
+    int ProjectID;
     Project project;
 
 
@@ -131,7 +138,7 @@ public class CreateNewProjectActivity extends AppCompatActivity {
                         if( response.equals("[]")){
                             //success
                             //ga verder
-                            successfulAddedProject();
+                            getLatestProjectFromUserUrl();
                         }
                         else {
                             Log.d("CreateNewProjectActivity", "something bad happened: " + response);
@@ -159,10 +166,63 @@ public class CreateNewProjectActivity extends AppCompatActivity {
         requestQueue.add(submitRequest);
     }
 
+    public void setProjectID(int projectID) {
+        ProjectID = projectID;
+    }
+
+    public void getLatestProjectFromUserUrl(){
+        String MODIFIED_LOGIN_URL = getLatestProjectFromUserUrl + userID;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest queueRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                MODIFIED_LOGIN_URL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if( response.length() != 0){
+                            Log.d("CreateNewProjectActivity", String.valueOf(response));
+                            JSONObject jsonobject = null;
+                            try {
+                                jsonobject = response.getJSONObject(0);
+                                int projectID = jsonobject.getInt("projectID");
+                                setProjectID(projectID);
+
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+
+                        else{
+                            TextView theView = (TextView) findViewById(R.id.tempText);
+                            String loginErrorMessage = getString(R.string.loginErrorMessage);
+                            theView.setText(loginErrorMessage);
+                            theView.setVisibility(View.VISIBLE);
+                        }
+                        successfulAddedProject();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        requestQueue.add(queueRequest);
+
+    }
+
+    public int getProjectID() {
+        return ProjectID;
+    }
+
     public void successfulAddedProject(){
         Intent intent = new Intent(this, ProjectActivity.class);
-        intent.putExtra("Project", project);
         intent.putExtra("userID", userID);
+        intent.putExtra("projectID", getProjectID());
+        Log.d("CreateNewProjectActivity", "passed to next intent: userid: " + userID + ", projectID: " + getProjectID());
         startActivity(intent);
     }
 }

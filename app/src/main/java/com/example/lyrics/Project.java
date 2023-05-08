@@ -45,6 +45,16 @@ public class Project implements Parcelable {
         requestProjectWithId(id,context);
     }
 
+    public Project(int projectID, String projectName, String projectDescription, int ownerID, String blockText, String blockTypes){
+        this.title = projectName;
+        this.description = projectDescription;
+        this.projectID = projectID;
+        this.ownerID = ownerID;
+        this.blockTypes = blockTypes;
+        this.blockText = blockText;
+
+    }
+
     public void addBlock(String type){
         blockListTypes.add("type");
     }
@@ -132,6 +142,7 @@ public class Project implements Parcelable {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        Log.d("json response", String.valueOf(response));
                         if( response.length() != 0){
                             for (int i=0;i<response.length();i++) {
                                 JSONObject jsonobject = null;
