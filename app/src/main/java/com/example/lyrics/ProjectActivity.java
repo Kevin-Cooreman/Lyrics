@@ -51,7 +51,10 @@ public class ProjectActivity extends AppCompatActivity {
         setProjectID(projectID);
         Log.d("ProjectActivity", "ProjectID: " + String.valueOf(projectID));
         requestProject();
-
+        recyclerView = findViewById(R.id.ProjectView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        ProjectAdapter projectAdapter = new ProjectAdapter(context, project);
+        recyclerView.setAdapter(projectAdapter);
 
 
 
@@ -102,13 +105,10 @@ public class ProjectActivity extends AppCompatActivity {
                             Project project = new Project(projectID, projectName, description, ownerID, blockText, blockTypes);
                             Log.d("ProjectActivity", "In request: "+ project.toString());
                             setProject(project);
+                            recyclerView.getAdapter().notifyDataSetChanged();
                         }
 
-                        recyclerView = findViewById(R.id.ProjectView);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-                        recyclerView.setLayoutManager(layoutManager);
-                        ProjectAdapter projectAdapter = new ProjectAdapter(context, project);
-                        recyclerView.setAdapter(projectAdapter);
+
                     }
                 },
                 new Response.ErrorListener() {
