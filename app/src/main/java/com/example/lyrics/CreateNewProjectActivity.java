@@ -120,7 +120,7 @@ public class CreateNewProjectActivity extends AppCompatActivity {
             theView.setVisibility(View.VISIBLE);
         }
         else{
-        Project newProject = new Project(ProjectID, title, String description, userID, BlockText, BlockTypes);
+        Project newProject = new Project(ProjectID, title, description, userID, new String(), new String());
         setProject(newProject);
         addNewProject();
         }
