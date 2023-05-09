@@ -13,11 +13,15 @@ public class Project implements Parcelable {
     private String description;
     private ArrayList<String> blockListTypes;
     private ArrayList<String> blockListLyrics;
+    private int projectID;
+
 
     //constructor
-    public Project(String title, String description){
+    public Project(int ProjectID, String title, String description,int ownerID, String BlockText, String BlockTypes){
         this.title = title;
         this.description = description;
+        this.projectID = ProjectID;
+        
     }
 
     public void addBlock(String type){

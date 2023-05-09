@@ -32,7 +32,7 @@ public class ProjectActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.ProjectView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        ProjectAdapter projectAdapter = new ProjectAdapter(this,1);
+        ProjectAdapter projectAdapter = new ProjectAdapter(this,project);
         recyclerView.setAdapter(projectAdapter);
 
         getData();
