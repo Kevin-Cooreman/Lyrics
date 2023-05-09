@@ -38,7 +38,6 @@ public class ProjectActivity extends AppCompatActivity {
         this.projectID = projectID;
     }
 
-    String projectTitle;
     RecyclerView recyclerView;
 
     @Override
@@ -53,11 +52,9 @@ public class ProjectActivity extends AppCompatActivity {
         requestProject();
         recyclerView = findViewById(R.id.ProjectView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        ProjectAdapter projectAdapter = new ProjectAdapter(context, project);
+        ProjectAdapter projectAdapter = new ProjectAdapter(context, project,1);
         recyclerView.setAdapter(projectAdapter);
-
-
-
+        title = findViewById(R.id.ProjectTitleView);
     }
 
     private void requestProject() {
@@ -106,6 +103,7 @@ public class ProjectActivity extends AppCompatActivity {
                             Log.d("ProjectActivity", "In request: "+ project.toString());
                             setProject(project);
                             recyclerView.getAdapter().notifyDataSetChanged();
+                            title.setText(projectName);
                         }
 
 
@@ -119,5 +117,6 @@ public class ProjectActivity extends AppCompatActivity {
                 });
         requestQueue.add(queueRequest);
     }
+
 
 }
