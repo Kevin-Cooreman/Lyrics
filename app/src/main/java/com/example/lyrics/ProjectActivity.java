@@ -20,7 +20,6 @@ public class ProjectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
-
         //import all data from Project
         Project project = (Project) getIntent().getParcelableExtra("Project");
 
@@ -33,7 +32,7 @@ public class ProjectActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.ProjectView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        ProjectAdapter projectAdapter = new ProjectAdapter(this,2);
+        ProjectAdapter projectAdapter = new ProjectAdapter(this,1);
         recyclerView.setAdapter(projectAdapter);
 
         getData();
@@ -53,6 +52,4 @@ public class ProjectActivity extends AppCompatActivity {
     private void setData(){
         title.setText(projectTitle);
     }
-
-    private OnAddBLockBtnClicked(){}
 }

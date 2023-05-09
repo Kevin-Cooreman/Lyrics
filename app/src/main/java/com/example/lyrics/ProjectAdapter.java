@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ProjectAdapter extends RecyclerView.Adapter {
     Context context;
     int AmountOfRows;
+    Project project;
 
-    public ProjectAdapter(Context context, int SectionsAmnt){
+    public ProjectAdapter(Context context, Project project){
         this.context = context;
-        AmountOfRows = SectionsAmnt;
+        this.project = project;
+
     }
     @NonNull
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

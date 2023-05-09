@@ -25,11 +25,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ProjectsListActivity extends AppCompatActivity {
+    ArrayList<Integer> ProjectID = new ArrayList<>();
     ArrayList<String> ProjectTitles = new ArrayList<>();
     ArrayList<String> ProjectDescriptions = new ArrayList<>();
 
-    String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectProjectsFromUser/";
-    String DescriptionsURL = "https://studev.groept.be/api/a22pt108/selectDescriptionsFromUser/";
+    String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectAllProjectsFromUser/";
+    //String DescriptionsURL = "https://studev.groept.be/api/a22pt108/selectDescriptionsFromUser/";
     int UserID;
     RecyclerView recyclerView;
 
@@ -46,7 +47,6 @@ public class ProjectsListActivity extends AppCompatActivity {
         setUserID(UserID);
 
         requestProjects();
-        requestDescriptions();
 
         recyclerView = findViewById(R.id.ProjectListView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -67,7 +67,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        Log.d("ProjectsListActivity", "Whole titles response: " + response.toString());
+                        Log.d("ProjectsListActivity", " response: " + response.toString());
 
                         for (int i=0 ;i<response.length(); i++) {
 
@@ -80,64 +80,25 @@ public class ProjectsListActivity extends AppCompatActivity {
                             }
 
                             String name;
+                            int id;
+                            String description;
                             try {
+                                id = jsonobject.getInt("projectID");
                                 name = jsonobject.getString("projectName");
-                                Log.d("ProjectsListActivity", "Project title: " + name);
+                                description = jsonobject.getString("description");
+
+                                Log.d("ProjectsListActivity", "ProjectList of user: " + id + ", " + name + ", " + description);
                             }
                             catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
 
                             ProjectTitles.add(name);
-
-                        }
-                        //ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(ProjectTitles, ProjectDescriptions);
-                        //recyclerView.setAdapter(projectsListAdapter);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-        requestQueue.add(queueRequest);
-    }
-
-    private void requestDescriptions() {
-        String MODIFIED_Projects_URL = DescriptionsURL + UserID;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest queueRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                MODIFIED_Projects_URL,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-
-                        Log.d("ProjectsListActivity", "Whole description response: " + response.toString());
-
-                        for (int i=0;i<response.length();i++){
-                            JSONObject jsonobject = null;
-                            try {
-                                jsonobject = response.getJSONObject(i);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                            String description;
-                            try {
-                                description = jsonobject.getString("description");
-                                Log.d("ProjectsListActivity", "Project description: " + description);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-
-
                             ProjectDescriptions.add(description);
+                            ProjectID.add(id);
 
                         }
-                        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(context, ProjectTitles, ProjectDescriptions);
+                        ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(context, ProjectTitles, ProjectDescriptions, ProjectID);
                         recyclerView.setAdapter(projectsListAdapter);
                     }
                 },

@@ -14,13 +14,10 @@ public class Project implements Parcelable {
     private ArrayList<String> blockListTypes;
     private ArrayList<String> blockListLyrics;
 
-    private int AmntOfBlocks;
-
     //constructor
     public Project(String title, String description){
         this.title = title;
         this.description = description;
-        AmntOfBlocks = 0;
     }
 
     public void addBlock(String type){
@@ -42,18 +39,6 @@ public class Project implements Parcelable {
 
     public ArrayList<String> getBlockListLyrics() {
         return blockListLyrics;
-    }
-
-    public void setAmntOfBlocks(int x){
-        AmntOfBlocks = x;
-    }
-
-    public void IncrementAmntOfBlocks(){
-        AmntOfBlocks++;
-    }
-
-    public int getAmntOfBlocks(){
-        return AmntOfBlocks;
     }
 
 
