@@ -14,6 +14,7 @@ public class Project implements Parcelable {
     private ArrayList<String> blockListTypes;
     private ArrayList<String> blockListLyrics;
     private int projectID;
+    private int Blocks;
 
 
     //constructor
@@ -44,7 +45,21 @@ public class Project implements Parcelable {
     public ArrayList<String> getBlockListLyrics() {
         return blockListLyrics;
     }
+    public int getProjectID(){ return projectID}
 
+    /*
+    public int getBlocks(){
+        if (blockListTypes == null){
+            return 1;
+        }
+        else {
+            Blocks = blockListTypes.size();
+            return Blocks;
+        }
+    }
+    //setters
+    public void setBlocks(int x){ Blocks = x;}
+    */
 
 
     @NonNull

@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +31,7 @@ public class ProjectActivity extends AppCompatActivity {
     Context context = this;
     Project project;
 
+
     public void setProject(Project project) {
         this.project = project;
     }
@@ -39,20 +41,21 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     RecyclerView recyclerView;
+    int amntOfBlocks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
         //import all data from Project
-        //Project project = (Project) getIntent().getParcelableExtra("Project");
+        Project project = getIntent().getParcelableExtra("Project");
         int projectID = getIntent().getIntExtra("projectID", -1);
         setProjectID(projectID);
         Log.d("ProjectActivity", "ProjectID: " + String.valueOf(projectID));
         requestProject();
         recyclerView = findViewById(R.id.ProjectView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        ProjectAdapter projectAdapter = new ProjectAdapter(context, project,1);
+        ProjectAdapter projectAdapter = new ProjectAdapter(context, project,amntOfBlocks);
         recyclerView.setAdapter(projectAdapter);
         title = findViewById(R.id.ProjectTitleView);
     }
@@ -104,6 +107,7 @@ public class ProjectActivity extends AppCompatActivity {
                             setProject(project);
                             recyclerView.getAdapter().notifyDataSetChanged();
                             title.setText(projectName);
+                            // amntOfBlocks = project.getBlocks();
                         }
 
 
@@ -118,5 +122,10 @@ public class ProjectActivity extends AppCompatActivity {
         requestQueue.add(queueRequest);
     }
 
+    public void onBtnSaveClicked(View Caller){
+        TextInputEditText Lyrics = findViewById(R.id.LyricsTxt);
+        String Text = String.valueOf(Lyrics.getText());
 
+
+    }
 }

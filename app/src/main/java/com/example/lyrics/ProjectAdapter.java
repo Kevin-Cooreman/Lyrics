@@ -35,11 +35,15 @@ public class ProjectAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return AmountOfRows;
+        if (AmountOfRows == 0){
+            return 1;
+        }
+        else{
+            return AmountOfRows;
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        //viewHolder for projectList
         ConstraintLayout ProjectListLayout;
 
         public MyViewHolder(@NonNull View itemView) {
