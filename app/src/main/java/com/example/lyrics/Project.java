@@ -45,7 +45,7 @@ public class Project implements Parcelable {
     public ArrayList<String> getBlockListLyrics() {
         return blockListLyrics;
     }
-    public int getProjectID(){ return projectID}
+    public int getProjectID(){ return projectID;}
 
     /*
     public int getBlocks(){
