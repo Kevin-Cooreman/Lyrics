@@ -48,4 +48,14 @@
         android:text="@string/addProjectBtn"
         app2:layout_constraintBottom_toBottomOf="@+id/ProjectView"
         app2:layout_constraintEnd_toStartOf="@+id/SaveBtn" />
+
+    <Button
+        android:id="@+id/recordBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Button"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintEnd_toStartOf="@+id/AddBlockBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
