@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -28,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProjectActivity extends AppCompatActivity {
@@ -38,7 +38,7 @@ public class ProjectActivity extends AppCompatActivity {
     Context context = this;
     Project project;
     String saveURL = "https://studev.groept.be/api/a22pt108/UpdateBlocks";
-
+    private ProjectAdapter projectAdapter;
 
     public void setProject(Project project) {
         this.project = project;
@@ -49,8 +49,8 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     RecyclerView recyclerView;
-    String[] sentences;
-    String[] blockTypesArray;
+    ArrayList<String> sentences ;
+    ArrayList<String> blockTypesArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +64,8 @@ public class ProjectActivity extends AppCompatActivity {
         requestProject();
         recyclerView = findViewById(R.id.ProjectView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        ProjectAdapter projectAdapter = new ProjectAdapter(context, project, sentences, blockTypesArray);
-        recyclerView.setAdapter(projectAdapter);
-        title = findViewById(R.id.ProjectTitleView);
+
+
     }
 
     private void requestProject() {
@@ -112,10 +111,15 @@ public class ProjectActivity extends AppCompatActivity {
                                 throw new RuntimeException(e);
                             }
                             Project project = new Project(projectID, projectName, description, ownerID, blockText, blockTypes);
-                            Log.d("ProjectActivity", "In request: "+ project.toString());
+
                             setProject(project);
+                            Log.d("ProjectActivity", "In request: "+ project.toString());
+                            projectAdapter = new ProjectAdapter(context, project, project.getSentences() , project.getBlockTypesSplit());
+                            recyclerView.setAdapter(projectAdapter);
+                            title = findViewById(R.id.ProjectTitleView);
+        /*
                             //seperate all textBlocks
-                            blockText.replace(";", " ");
+                            String newBlockText = blockText.replace(";", " ");
                             //array with sentences
                             String[] sentences = blockText.split("\\W+");
                             //Log.d("ProjectActivity", String.valueOf(sentences));
@@ -125,10 +129,9 @@ public class ProjectActivity extends AppCompatActivity {
                             String[] blockTypesSplit = blockText.split("\\W+");
                             setBlockTypesArray(blockTypesSplit);
                             Log.d("ProjectActivity", "sentences: " + Arrays.toString(sentences) + ", types: " + Arrays.toString(blockTypesSplit));
-
+*/
                             recyclerView.getAdapter().notifyDataSetChanged();
                             title.setText(projectName);
-                            // amntOfBlocks = project.getBlocks();
                         }
 
 
@@ -144,13 +147,7 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
 
-    public void setSentences(String[] sentences) {
-        this.sentences = sentences;
-    }
 
-    public void setBlockTypesArray(String[] blockTypesArray) {
-        this.blockTypesArray = blockTypesArray;
-    }
 
     private void requestSave(String Lyrics, String Types, int projectID){
 

@@ -5,8 +5,10 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.security.acl.Owner;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class Project implements Parcelable {
 
@@ -17,18 +19,25 @@ public class Project implements Parcelable {
     private int projectID;
     private int Blocks;
     private int ownerID;
-    private String BlockText;
-    private String BlockTypes;
+    private ArrayList<String> sentences;
+    private ArrayList<String> blockTypesSplit;
 
 
     //constructor
-    public Project(int ProjectID, String title, String description,int ownerID, String BlockText, String BlockTypes){
+    public Project(int ProjectID, String title, String description,int ownerID, String blockText, String blockTypes){
         this.title = title;
         this.description = description;
         this.projectID = ProjectID;
         this.ownerID = ownerID;
-        this.BlockText = BlockText;
-        this.BlockTypes = BlockTypes;
+        sentences= new ArrayList<>();
+        blockTypesSplit = new ArrayList<>();
+        //seperate all textBlocks
+        String[] text = blockText.split(";");
+        Collections.addAll(sentences, text);
+        String[] types = blockTypes.split(";");
+        Collections.addAll(blockTypesSplit, types);
+
+
     }
 
     public void addBlock(String type){
@@ -53,6 +62,36 @@ public class Project implements Parcelable {
     }
     public int getProjectID(){ return projectID;}
 
+    public int getBlocks() {
+        return Blocks;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public ArrayList<String> getSentences() {
+        if( sentences.size() == 0){
+            ArrayList<String> loading = new ArrayList<>();
+            loading.add("loading...");
+            return loading;
+        }
+        else {
+            return sentences;
+        }
+    }
+
+    public ArrayList<String> getBlockTypesSplit() {
+        if( sentences.size() == 0){
+            ArrayList<String> loading = new ArrayList<>();
+            loading.add("loading...");
+            return loading;
+        }
+        else {
+            return blockTypesSplit;
+        }
+    }
+
     /*
     public int getBlocks(){
         if (blockListTypes == null){
@@ -71,7 +110,7 @@ public class Project implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "projectID: " + projectID+ "projectName: " + title + ", description: " + description + ", ownerID: "+ ownerID + ", blockText : " + BlockText + ", BlockTypes: " + BlockTypes ;
+        return "projectID: " + projectID+ "projectName: " + title + ", description: " + description + ", ownerID: "+ ownerID + ", blockText : " + sentences + ", BlockTypes: " + blockTypesSplit;
     }
 
     //all things necessary for Parcelable
