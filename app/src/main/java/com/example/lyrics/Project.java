@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.security.acl.Owner;
 import java.util.ArrayList;
 
 public class Project implements Parcelable {
@@ -22,6 +23,7 @@ public class Project implements Parcelable {
         this.title = title;
         this.description = description;
         this.projectID = ProjectID;
+        this.owner
         
     }
 
@@ -65,7 +67,7 @@ public class Project implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "title: " + title + ", description: " + description;
+        return "projectID: " + projectID+ "projectName: " + title + ", description: " + description + ",ownerID: "+ ;
     }
 
     //all things necessary for Parcelable

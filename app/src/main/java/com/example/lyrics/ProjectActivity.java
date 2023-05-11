@@ -48,7 +48,6 @@ public class ProjectActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     int amntOfBlocks;
-    String section;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,23 +173,13 @@ public class ProjectActivity extends AppCompatActivity {
         String Text = String.valueOf(Lyrics.getText());
         String modifiedText = Text.replace(" ","_")+";";
 
+
         // get text from spinner
 
         Spinner type = findViewById(R.id.SectionsSp);
 
-        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                String Type = type.getItemAtPosition(position).toString();
-                section = Type+";";
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                section = "intro;";
-            }
-        });
-
+        String section = type.getSelectedItem().toString() + ";";
+        Log.d("PrpjectAcitivty", "modifiedtext: " + modifiedText + ", section : " + section + ", projectID: "+ projectID);
         requestSave(modifiedText,section,projectID);
     }
 }
