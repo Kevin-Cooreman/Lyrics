@@ -38,8 +38,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String lyric = textBlocks[position].replace("_"," ").replace(";","");
-        String Type = types[position].replace(";","");
+        String lyric = textBlocks.get(position).replace("_"," ").replace(";","");
+        String Type = types.get(position).replace(";","");
 
 
         holder.myText.setText(lyric);
@@ -56,11 +56,11 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        if (textBlocks.length == 0){
+        if (textBlocks.size() == 0){
             return 1;
         }
         else{
-            return textBlocks.length;
+            return textBlocks.size();
         }
     }
 
