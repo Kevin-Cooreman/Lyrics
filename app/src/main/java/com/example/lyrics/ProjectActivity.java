@@ -47,7 +47,6 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     RecyclerView recyclerView;
-    int amntOfBlocks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +60,7 @@ public class ProjectActivity extends AppCompatActivity {
         requestProject();
         recyclerView = findViewById(R.id.ProjectView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        ProjectAdapter projectAdapter = new ProjectAdapter(context, project,amntOfBlocks);
+        ProjectAdapter projectAdapter = new ProjectAdapter(context, project,,);
         recyclerView.setAdapter(projectAdapter);
         title = findViewById(R.id.ProjectTitleView);
     }

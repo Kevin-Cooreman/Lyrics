@@ -149,7 +149,6 @@ public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        //viewHolder for projectList
 
         TextView myText1, myText2;
         ConstraintLayout ProjectListLayout;
