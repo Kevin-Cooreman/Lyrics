@@ -33,7 +33,7 @@ import java.util.Map;
 public class ProjectActivity extends AppCompatActivity {
 
     private TextView title;
-    int projectID;
+    private int projectID;
     private String selectProjectURL = "https://studev.groept.be/api/a22pt108/selectProjectWithID/";
     private Context context = this;
     private Project project;
