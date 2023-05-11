@@ -30,23 +30,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onBtnLoginClicked(View Caller) {
-        //Intent intent = new Intent(this, ProjectsListActivity.class);
-        //startActivity(intent);
         EditText usernameEditText = findViewById(R.id.usernameInput);
         String username = usernameEditText.getText().toString();
         EditText passwordEditText = findViewById(R.id.passwordInput);
         String password = passwordEditText.getText().toString();
 
-
-        //username & password debug
-        //TextView usernameView = (TextView) findViewById(R.id.usernameView);
-        //usernameView.setText(username);
-        //TextView passwordView = (TextView) findViewById(R.id.passwordView);
-        //passwordView.setText(password);
-        //
-
         requestLogin(username, password);
-
     }
 
     public void onBtnRegisterClicked(View Caller) {

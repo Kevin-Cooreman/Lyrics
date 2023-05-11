@@ -138,7 +138,6 @@ public class ProjectActivity extends AppCompatActivity {
 
 
     private void requestSave(String Lyrics, String Types, int projectID){
-
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest submitRequest = new StringRequest(
                 Request.Method.POST,

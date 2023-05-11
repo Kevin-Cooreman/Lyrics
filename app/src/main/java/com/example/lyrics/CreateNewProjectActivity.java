@@ -47,62 +47,6 @@ public class CreateNewProjectActivity extends AppCompatActivity {
 
     }
 
-    /*
-    //TEMP RECORD BUTTON
-    //
-    boolean recording = false;
-    MediaRecorder mediaRecorder = new MediaRecorder();
-
-    public void onBtnRecordClicked(View Caller){
-        if (recording){
-            //stop recording
-            stopRecording(mediaRecorder);
-            recording = false;
-        }
-        else{
-            //start recording
-            startRecording(mediaRecorder);
-            recording = true;
-        }
-    }
-
-    public void startRecording(MediaRecorder mediaRecorder){
-
-
-        // Set audio source and output format
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-
-        // Set output file name and path
-        String fileName = "record_" + System.currentTimeMillis() + ".3gp";
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName;
-        mediaRecorder.setOutputFile(filePath);
-
-        // Set audio encoder and quality
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setAudioEncodingBitRate(16 * 44100);
-        mediaRecorder.setAudioSamplingRate(44100);
-
-        try {
-            mediaRecorder.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        mediaRecorder.start();
-        Button recordButton = findViewById(R.id.recordButton);
-        recordButton.setText("Stop Recording");
-    }
-    public void stopRecording(MediaRecorder mediaRecorder){
-        mediaRecorder.stop();
-        mediaRecorder.release();
-        Button recordButton = findViewById(R.id.recordButton);
-        recordButton.setText("Record Audio");
-    }
-    */
-    //
-    //
-    //
 
     public void setUserID(int UserID){this.userID = UserID;}
 
@@ -120,7 +64,7 @@ public class CreateNewProjectActivity extends AppCompatActivity {
             theView.setVisibility(View.VISIBLE);
         }
         else{
-        Project newProject = new Project(ProjectID, title, description, userID, new String(), new String());
+        Project newProject = new Project(ProjectID, title, description, userID, "", new String());
         setProject(newProject);
         addNewProject();
         }

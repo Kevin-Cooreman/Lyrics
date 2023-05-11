@@ -92,28 +92,13 @@ public class Project implements Parcelable {
         }
     }
 
-    /*
-    public int getBlocks(){
-        if (blockListTypes == null){
-            return 1;
-        }
-        else {
-            Blocks = blockListTypes.size();
-            return Blocks;
-        }
-    }
-    //setters
-    public void setBlocks(int x){ Blocks = x;}
-    */
-
-
     @NonNull
     @Override
     public String toString() {
         return "projectID: " + projectID+ "projectName: " + title + ", description: " + description + ", ownerID: "+ ownerID + ", blockText : " + sentences + ", BlockTypes: " + blockTypesSplit;
     }
 
-    //all things necessary for Parcelable
+    //all things necessary for Parcelable --> currently not used
     protected Project(Parcel in) {
         title = in.readString();
         description = in.readString();
