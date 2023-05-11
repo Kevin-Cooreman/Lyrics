@@ -53,7 +53,6 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
 
 
 
-
     @Override
     public int getItemCount() {
         if (textBlocks.size() == 0){

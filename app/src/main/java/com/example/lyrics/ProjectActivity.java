@@ -32,13 +32,14 @@ import java.util.Map;
 
 public class ProjectActivity extends AppCompatActivity {
 
-    TextView title;
+    private TextView title;
     int projectID;
-    String selectProjectURL = "https://studev.groept.be/api/a22pt108/selectProjectWithID/";
-    Context context = this;
-    Project project;
-    String saveURL = "https://studev.groept.be/api/a22pt108/UpdateBlocks";
+    private String selectProjectURL = "https://studev.groept.be/api/a22pt108/selectProjectWithID/";
+    private Context context = this;
+    private Project project;
+    private String saveURL = "https://studev.groept.be/api/a22pt108/UpdateBlocks";
     private ProjectAdapter projectAdapter;
+
 
     public void setProject(Project project) {
         this.project = project;
@@ -117,19 +118,6 @@ public class ProjectActivity extends AppCompatActivity {
                             projectAdapter = new ProjectAdapter(context, project, project.getSentences() , project.getBlockTypesSplit());
                             recyclerView.setAdapter(projectAdapter);
                             title = findViewById(R.id.ProjectTitleView);
-        /*
-                            //seperate all textBlocks
-                            String newBlockText = blockText.replace(";", " ");
-                            //array with sentences
-                            String[] sentences = blockText.split("\\W+");
-                            //Log.d("ProjectActivity", String.valueOf(sentences));
-                            setSentences(sentences);
-                            //seperate all textTypes and put in array
-                            blockTypes.replace(";", "");
-                            String[] blockTypesSplit = blockText.split("\\W+");
-                            setBlockTypesArray(blockTypesSplit);
-                            Log.d("ProjectActivity", "sentences: " + Arrays.toString(sentences) + ", types: " + Arrays.toString(blockTypesSplit));
-*/
                             recyclerView.getAdapter().notifyDataSetChanged();
                             title.setText(projectName);
                         }
@@ -188,6 +176,14 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     public void onBtnSaveClicked(View Caller){
+        ArrayList<String> lAS = getCurrent();
+        String Lyrics = lAS.get(0);
+        String sections = lAS.get(1);
+        requestSave(Lyrics,sections,projectID);
+
+    }
+
+    public ArrayList<String> getCurrent(){
 
         StringBuilder lyricsBuilder = new StringBuilder();
         StringBuilder sectionBuilder = new StringBuilder();
@@ -205,15 +201,25 @@ public class ProjectActivity extends AppCompatActivity {
 
                 lyricsBuilder.append(modifiedText);
                 sectionBuilder.append(section);
-
-                // Save the modifiedText, section, and projectID as per your requirement
-                // requestSave(modifiedText, section, projectID);
             }
         }
-
         String Lyrics = lyricsBuilder.toString();
         String sections = sectionBuilder.toString();
-        requestSave(Lyrics,sections,projectID);
+        ArrayList<String> lyricsAndSections = new ArrayList<>();
+        lyricsAndSections.add(Lyrics);
+        lyricsAndSections.add(sections);
         Log.d("ProjectActivity", Lyrics+ ", " + sections);
+        return lyricsAndSections;
     }
+
+    public void onBtnPlusClicked(View Caller){
+        ArrayList<String> lAS = getCurrent();
+        String Lyrics = lAS.get(0);
+        String sections = lAS.get(1);
+        String l1 = Lyrics.concat(";_");
+        String s2 = sections.concat(";_");
+        requestSave(l1, s2, projectID);
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
 }
