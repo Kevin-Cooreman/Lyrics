@@ -25,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +49,8 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     RecyclerView recyclerView;
+    String[] sentences;
+    String[] blockTypesArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,7 @@ public class ProjectActivity extends AppCompatActivity {
         requestProject();
         recyclerView = findViewById(R.id.ProjectView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        ProjectAdapter projectAdapter = new ProjectAdapter(context, project,,);
+        ProjectAdapter projectAdapter = new ProjectAdapter(context, project, sentences, blockTypesArray);
         recyclerView.setAdapter(projectAdapter);
         title = findViewById(R.id.ProjectTitleView);
     }
@@ -110,6 +114,18 @@ public class ProjectActivity extends AppCompatActivity {
                             Project project = new Project(projectID, projectName, description, ownerID, blockText, blockTypes);
                             Log.d("ProjectActivity", "In request: "+ project.toString());
                             setProject(project);
+                            //seperate all textBlocks
+                            blockText.replace(";", " ");
+                            //array with sentences
+                            String[] sentences = blockText.split("\\W+");
+                            //Log.d("ProjectActivity", String.valueOf(sentences));
+                            setSentences(sentences);
+                            //seperate all textTypes and put in array
+                            blockTypes.replace(";", "");
+                            String[] blockTypesSplit = blockText.split("\\W+");
+                            setBlockTypesArray(blockTypesSplit);
+                            Log.d("ProjectActivity", "sentences: " + Arrays.toString(sentences) + ", types: " + Arrays.toString(blockTypesSplit));
+
                             recyclerView.getAdapter().notifyDataSetChanged();
                             title.setText(projectName);
                             // amntOfBlocks = project.getBlocks();
@@ -127,7 +143,16 @@ public class ProjectActivity extends AppCompatActivity {
         requestQueue.add(queueRequest);
     }
 
-    private void requestSave(String Lyrics, String Types,int projectID){
+
+    public void setSentences(String[] sentences) {
+        this.sentences = sentences;
+    }
+
+    public void setBlockTypesArray(String[] blockTypesArray) {
+        this.blockTypesArray = blockTypesArray;
+    }
+
+    private void requestSave(String Lyrics, String Types, int projectID){
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest submitRequest = new StringRequest(
