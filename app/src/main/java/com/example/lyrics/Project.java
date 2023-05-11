@@ -16,6 +16,9 @@ public class Project implements Parcelable {
     private ArrayList<String> blockListLyrics;
     private int projectID;
     private int Blocks;
+    private int ownerID;
+    private String BlockText;
+    private String BlockTypes;
 
 
     //constructor
@@ -23,8 +26,9 @@ public class Project implements Parcelable {
         this.title = title;
         this.description = description;
         this.projectID = ProjectID;
-        this.owner
-        
+        this.ownerID = ownerID;
+        this.BlockText = BlockText;
+        this.BlockTypes = BlockTypes;
     }
 
     public void addBlock(String type){
@@ -67,13 +71,14 @@ public class Project implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "projectID: " + projectID+ "projectName: " + title + ", description: " + description + ",ownerID: "+ ;
+        return "projectID: " + projectID+ "projectName: " + title + ", description: " + description + ", ownerID: "+ ownerID + ", blockText : " + BlockText + ", BlockTypes: " + BlockTypes ;
     }
 
     //all things necessary for Parcelable
     protected Project(Parcel in) {
         title = in.readString();
         description = in.readString();
+        projectID = in.readInt();
     }
 
     public static final Creator<Project> CREATOR = new Creator<Project>() {
