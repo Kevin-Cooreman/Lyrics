@@ -216,8 +216,8 @@ public class ProjectActivity extends AppCompatActivity {
         ArrayList<String> lAS = getCurrent();
         String Lyrics = lAS.get(0);
         String sections = lAS.get(1);
-        String l1 = Lyrics.concat(";_");
-        String s2 = sections.concat(";_");
+        String l1 = Lyrics.concat("_;");
+        String s2 = sections.concat("_;");
         requestSave(l1, s2, projectID);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
