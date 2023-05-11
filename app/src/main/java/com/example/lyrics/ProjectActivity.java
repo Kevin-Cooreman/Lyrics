@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,11 +118,13 @@ public class ProjectActivity extends AppCompatActivity {
                             blockText.replace(";", " ");
                             //array with sentences
                             String[] sentences = blockText.split("\\W+");
+                            //Log.d("ProjectActivity", String.valueOf(sentences));
                             setSentences(sentences);
                             //seperate all textTypes and put in array
                             blockTypes.replace(";", "");
                             String[] blockTypesSplit = blockText.split("\\W+");
                             setBlockTypesArray(blockTypesSplit);
+                            Log.d("ProjectActivity", "sentences: " + Arrays.toString(sentences) + ", types: " + Arrays.toString(blockTypesSplit));
 
                             recyclerView.getAdapter().notifyDataSetChanged();
                             title.setText(projectName);

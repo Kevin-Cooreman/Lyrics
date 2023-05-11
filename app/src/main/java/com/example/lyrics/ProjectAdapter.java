@@ -14,10 +14,9 @@ public class ProjectAdapter extends RecyclerView.Adapter {
     int AmountOfRows;
     Project project;
 
-    public ProjectAdapter(Context context, Project project, int amntOfRows){
+    public ProjectAdapter(Context context, Project project, String[] sentences, String[] types){
         this.context = context;
         this.project = project;
-        this.AmountOfRows = amntOfRows;
 
     }
     @NonNull
