@@ -21,6 +21,7 @@
     <string name="CreateNewProjectBtn">Create</string>
     <string name="RecordBtn">Record</string>
     <string name="SaveBtn">Save</string>
+    <string name="shareBtn">Share</string>
 
     <string-array name="Sections">
         <item>Intro</item>

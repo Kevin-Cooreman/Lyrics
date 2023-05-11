@@ -189,18 +189,31 @@ public class ProjectActivity extends AppCompatActivity {
 
     public void onBtnSaveClicked(View Caller){
 
-        // get Text From TextBlock
-        TextInputEditText Lyrics = findViewById(R.id.LyricsTxt);
-        String Text = String.valueOf(Lyrics.getText());
-        String modifiedText = Text.replace(" ","_")+";";
+        StringBuilder lyricsBuilder = new StringBuilder();
+        StringBuilder sectionBuilder = new StringBuilder();
 
+        for (int i = 0; i < projectAdapter.getItemCount(); i++) {
+            View itemView = recyclerView.getLayoutManager().findViewByPosition(i);
+            if (itemView != null) {
 
-        // get text from spinner
+                TextInputEditText lyricsEditText = itemView.findViewById(R.id.LyricsTxt); // Replace R.id.LyricsTxt with the ID of your EditText in each row
+                Spinner sectionsSpinner = itemView.findViewById(R.id.SectionsSp); // Replace R.id.SectionsSp with the ID of your Spinner in each row
 
-        Spinner type = findViewById(R.id.SectionsSp);
+                String lyricsText = String.valueOf(lyricsEditText.getText());
+                String modifiedText = lyricsText.replace(" ", "_") + ";";
+                String section = sectionsSpinner.getSelectedItem().toString() + ";";
 
-        String section = type.getSelectedItem().toString() + ";";
-        Log.d("PrpjectAcitivty", "modifiedtext: " + modifiedText + ", section : " + section + ", projectID: "+ projectID);
-        requestSave(modifiedText,section,projectID);
+                lyricsBuilder.append(modifiedText);
+                sectionBuilder.append(section);
+
+                // Save the modifiedText, section, and projectID as per your requirement
+                // requestSave(modifiedText, section, projectID);
+            }
+        }
+
+        String Lyrics = lyricsBuilder.toString();
+        String sections = sectionBuilder.toString();
+        requestSave(Lyrics,sections,projectID);
+        Log.d("ProjectActivity", Lyrics+ ", " + sections);
     }
 }
