@@ -218,7 +218,12 @@ public class ProjectActivity extends AppCompatActivity {
         String l1 = Lyrics.concat("_;");
         String s2 = sections.concat("_;");
         requestSave(l1, s2, projectID);
-        recyclerView.getAdapter().notifyDataSetChanged();
+        requestProject();
+        //recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.requestLayout();
+        recyclerView.invalidate();
+        //smooth scroll werkt niet
+        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
     }
 
 }

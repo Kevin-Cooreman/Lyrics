@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         String username = usernameEditText.getText().toString();
         EditText passwordEditText = findViewById(R.id.newPasswordInput);
         String password = passwordEditText.getText().toString();
-        if(username.length() == 0 || password.length() == 0){
+        if(username.length() == 0 || password.length() == 0) {
             TextView theView = (TextView) findViewById(R.id.tempTextRegister);
             theView.setText("fill in a username and password first");
             theView.setVisibility(View.VISIBLE);
