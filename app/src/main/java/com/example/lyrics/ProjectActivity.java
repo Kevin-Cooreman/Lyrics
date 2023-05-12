@@ -216,13 +216,12 @@ public class ProjectActivity extends AppCompatActivity {
         String Lyrics = lAS.get(0);
         String sections = lAS.get(1);
         String l1 = Lyrics.concat("_;");
-        String s2 = sections.concat("_;");
-        requestSave(l1, s2, projectID);
-        requestProject();
-        //recyclerView.getAdapter().notifyDataSetChanged();
+        String s1 = sections.concat("_;");
+        project.setBlockListLyrics(l1);
+        project.setBlockListTypes(s1);
+        requestSave(l1, s1, projectID);
         recyclerView.requestLayout();
         recyclerView.invalidate();
-        //smooth scroll werkt niet
         recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
     }
 

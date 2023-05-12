@@ -92,6 +92,17 @@ public class Project implements Parcelable {
         }
     }
 
+    public void setBlockListTypes(String blockTypes) {
+        this.blockTypesSplit.clear();
+        String[] types = blockTypes.split(";");
+        Collections.addAll(blockTypesSplit, types);
+    }
+    public void setBlockListLyrics(String blockText) {
+        this.sentences.clear();
+        String[] sentencesArray = blockText.split(";");
+        Collections.addAll(sentences, sentencesArray);
+    }
+
     @NonNull
     @Override
     public String toString() {
