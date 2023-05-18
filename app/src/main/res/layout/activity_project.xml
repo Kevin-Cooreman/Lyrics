@@ -62,12 +62,13 @@
         app2:layout_constraintEnd_toStartOf="@+id/AddBlockBtn" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/shareBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Button"
+        android:onClick="onBtnShareClicked"
+        android:text="@string/shareBtn"
         app2:layout_constraintBottom_toBottomOf="parent"
         app2:layout_constraintEnd_toStartOf="@+id/recordBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

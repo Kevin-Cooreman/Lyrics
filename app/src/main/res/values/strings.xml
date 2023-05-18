@@ -22,6 +22,7 @@
     <string name="RecordBtn">Record</string>
     <string name="SaveBtn">Save</string>
     <string name="shareBtn">Share</string>
+    <string name="shareUserlbl">Share with:</string>
 
     <string-array name="Sections">
         <item>Intro</item>

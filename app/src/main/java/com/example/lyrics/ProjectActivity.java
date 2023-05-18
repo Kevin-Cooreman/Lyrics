@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -223,6 +224,11 @@ public class ProjectActivity extends AppCompatActivity {
         recyclerView.requestLayout();
         recyclerView.invalidate();
         recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+    }
+
+    public void onBtnShareClicked(View Caller) {
+        Intent intent = new Intent(this, ShareActivity.class);
+        startActivity(intent);
     }
 
 }
