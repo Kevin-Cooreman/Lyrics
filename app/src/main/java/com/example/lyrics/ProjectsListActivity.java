@@ -30,6 +30,7 @@ public class ProjectsListActivity extends AppCompatActivity {
     ArrayList<String> ProjectDescriptions = new ArrayList<>();
 
     String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectAllProjectsFromUser/";
+    String sharedProjectsURL = "https://studev.groept.be/api/a22pt108/getSharedProjects/";
     //String DescriptionsURL = "https://studev.groept.be/api/a22pt108/selectDescriptionsFromUser/";
     int UserID;
     RecyclerView recyclerView;
@@ -47,6 +48,7 @@ public class ProjectsListActivity extends AppCompatActivity {
         setUserID(UserID);
 
         requestProjects();
+        requestSharedProjects();
 
         recyclerView = findViewById(R.id.ProjectListView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -62,6 +64,59 @@ public class ProjectsListActivity extends AppCompatActivity {
         JsonArrayRequest queueRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 MODIFIED_Projects_URL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        Log.d("ProjectsListActivity", " response: " + response.toString());
+
+                        for (int i=0 ;i<response.length(); i++) {
+
+                            JSONObject jsonobject = null;
+                            try {
+                                jsonobject = response.getJSONObject(i);
+                            }
+                            catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            String name;
+                            int id;
+                            String description;
+                            try {
+                                id = jsonobject.getInt("projectID");
+                                name = jsonobject.getString("projectName");
+                                description = jsonobject.getString("description");
+
+                                Log.d("ProjectsListActivity", "ProjectList of user: " + id + ", " + name + ", " + description);
+                            }
+                            catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            ProjectTitles.add(name);
+                            ProjectDescriptions.add(description);
+                            ProjectID.add(id);
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        requestQueue.add(queueRequest);
+    }
+
+    private void requestSharedProjects() {
+        String MODIFIED_sharedProjects_URL = sharedProjectsURL + UserID;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest queueRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                MODIFIED_sharedProjects_URL,
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
