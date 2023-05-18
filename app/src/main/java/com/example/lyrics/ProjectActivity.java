@@ -228,7 +228,8 @@ public class ProjectActivity extends AppCompatActivity {
 
     public void onBtnShareClicked(View Caller) {
         Intent intent = new Intent(this, ShareActivity.class);
-        startActivity(intent);
+        intent.putExtra("projectID", projectID);
+        context.startActivity(intent);
     }
 
 }

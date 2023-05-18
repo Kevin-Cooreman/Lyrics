@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/lblSharedUser"
+        android:id="@+id/sharedUserInput"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -34,9 +34,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
+        android:onClick="onBtnSharedClicked"
         android:text="@string/shareBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblSharedUser" />
+        app:layout_constraintTop_toBottomOf="@+id/sharedUserInput" />
 
     <TextView
         android:id="@+id/shareErrormsgTxt"
