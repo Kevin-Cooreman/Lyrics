@@ -23,6 +23,9 @@
     <string name="SaveBtn">Save</string>
     <string name="shareBtn">Share</string>
     <string name="shareUserlbl">Share with:</string>
+    <string name="stopRecBtn">StopR</string>
+    <string name="playBtn">Play</string>
+    <string name="stopPlayBtn">StopP</string>
 
     <string-array name="Sections">
         <item>Intro</item>

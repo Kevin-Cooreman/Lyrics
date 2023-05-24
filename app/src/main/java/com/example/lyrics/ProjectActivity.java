@@ -1,11 +1,18 @@
 package com.example.lyrics;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,14 +32,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProjectActivity extends AppCompatActivity {
 
+    private static String uploadAudio_URL = "https://studev.groept.be/api/a22pt108/saveAudio/";
+    private static int MICROPHONE_PERMISSION_CODE = 200;
+    private static final int SAMPLE_RATE = 44100; // Sample rate (Hz)
+    private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO; // Mono channel
+    private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT; // 16-bit PCM encoding
+    private static final int BUFFER_SIZE = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT);
+
+    private AudioRecord audioRecord;
+    private boolean isRecording = false;
     private TextView title;
     private int projectID;
     private String selectProjectURL = "https://studev.groept.be/api/a22pt108/selectProjectWithID/";
@@ -51,7 +74,7 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     RecyclerView recyclerView;
-    ArrayList<String> sentences ;
+    ArrayList<String> sentences;
     ArrayList<String> blockTypesArray;
 
     @Override
@@ -66,6 +89,9 @@ public class ProjectActivity extends AppCompatActivity {
         requestProject();
         recyclerView = findViewById(R.id.ProjectView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        if (checkMic()) {
+            getMicPermission();
+        }
 
 
     }
@@ -83,13 +109,12 @@ public class ProjectActivity extends AppCompatActivity {
 
                         Log.d("ProjectActivity", " response: " + response.toString());
 
-                        for (int i=0 ;i<response.length(); i++) {
+                        for (int i = 0; i < response.length(); i++) {
 
                             JSONObject jsonobject = null;
                             try {
                                 jsonobject = response.getJSONObject(i);
-                            }
-                            catch (JSONException e) {
+                            } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
 
@@ -108,15 +133,14 @@ public class ProjectActivity extends AppCompatActivity {
                                 blockText = jsonobject.getString("blockText");
                                 blockTypes = jsonobject.getString("blockTypes");
 
-                            }
-                            catch (JSONException e) {
+                            } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
                             Project project = new Project(projectID, projectName, description, ownerID, blockText, blockTypes);
 
                             setProject(project);
-                            Log.d("ProjectActivity", "In request: "+ project.toString());
-                            projectAdapter = new ProjectAdapter(context, project, project.getSentences() , project.getBlockTypesSplit());
+                            Log.d("ProjectActivity", "In request: " + project.toString());
+                            projectAdapter = new ProjectAdapter(context, project, project.getSentences(), project.getBlockTypesSplit());
                             recyclerView.setAdapter(projectAdapter);
                             title = findViewById(R.id.ProjectTitleView);
                             recyclerView.getAdapter().notifyDataSetChanged();
@@ -136,9 +160,7 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
 
-
-
-    private void requestSave(String Lyrics, String Types, int projectID){
+    private void requestSave(String Lyrics, String Types, int projectID) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest submitRequest = new StringRequest(
                 Request.Method.POST,
@@ -146,10 +168,9 @@ public class ProjectActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if( response.equals("[]")){
+                        if (response.equals("[]")) {
 
-                        }
-                        else {
+                        } else {
 
                         }
 
@@ -175,15 +196,38 @@ public class ProjectActivity extends AppCompatActivity {
         requestQueue.add(submitRequest);
     }
 
-    public void onBtnSaveClicked(View Caller){
+    private static void uploadAudio(byte[] audioData, int projectID) throws IOException {
+        URL url = new URL(uploadAudio_URL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Content-Type", "application/octet-stream");
+
+        // Set additional request parameters
+        String query = "projectid=" + URLEncoder.encode(String.valueOf(projectID), "UTF-8");
+
+        try (OutputStream outputStream = connection.getOutputStream()) {
+            outputStream.write(audioData);
+            outputStream.write("&".getBytes());
+            outputStream.write(query.getBytes());
+        }
+        Log.d("ProjectActivity", "In request: " +audioData.toString());
+
+        int responseCode = connection.getResponseCode();
+        // Handle the response code or any other response as needed
+
+        connection.disconnect();
+    }
+
+    public void onBtnSaveClicked(View Caller) {
         ArrayList<String> lAS = getCurrent();
         String Lyrics = lAS.get(0);
         String sections = lAS.get(1);
-        requestSave(Lyrics,sections,projectID);
+        requestSave(Lyrics, sections, projectID);
 
     }
 
-    public ArrayList<String> getCurrent(){
+    public ArrayList<String> getCurrent() {
 
         StringBuilder lyricsBuilder = new StringBuilder();
         StringBuilder sectionBuilder = new StringBuilder();
@@ -208,11 +252,11 @@ public class ProjectActivity extends AppCompatActivity {
         ArrayList<String> lyricsAndSections = new ArrayList<>();
         lyricsAndSections.add(Lyrics);
         lyricsAndSections.add(sections);
-        Log.d("ProjectActivity", Lyrics+ ", " + sections);
+        Log.d("ProjectActivity", Lyrics + ", " + sections);
         return lyricsAndSections;
     }
 
-    public void onBtnPlusClicked(View Caller){
+    public void onBtnPlusClicked(View Caller) {
         ArrayList<String> lAS = getCurrent();
         String Lyrics = lAS.get(0);
         String sections = lAS.get(1);
@@ -232,4 +276,75 @@ public class ProjectActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
+
+    public void onBtnRecordPressed(View Caller) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            checkMic();
+            getMicPermission();
+            return;
+        }
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT, BUFFER_SIZE);
+        audioRecord.startRecording();
+        isRecording = true;
+
+        Thread recordingThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[BUFFER_SIZE];
+
+                try {
+                    while (isRecording) {
+                        int bytesRead = audioRecord.read(buffer, 0, BUFFER_SIZE);
+                        if (bytesRead != AudioRecord.ERROR_INVALID_OPERATION) {
+                            outputStream.write(buffer, 0, bytesRead);
+                        }
+                    }
+                } finally {
+                    try {
+                        outputStream.close();
+                        byte[] audioData = outputStream.toByteArray();
+                        uploadAudio(audioData,projectID);
+                        Log.d("ProjectActivity", "In request: " +audioData.toString());
+                        Log.d("ProjectActivity", "In request: " + Base64.getEncoder().encodeToString(audioData));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        recordingThread.start();
+    }
+    public void onBtnStopPressed(View Caller){
+        isRecording = false;
+
+        if (audioRecord != null) {
+            audioRecord.stop();
+            audioRecord.release();
+            audioRecord = null;
+        }
+
+    }
+    public void onBtnPlayPressed(View Caller){
+
+    }
+
+    private boolean checkMic(){
+        if (this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    private void getMicPermission(){
+        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_DENIED){
+
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.RECORD_AUDIO},
+                    MICROPHONE_PERMISSION_CODE);
+        }
+    }
 }
