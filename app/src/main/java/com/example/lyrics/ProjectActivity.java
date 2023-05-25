@@ -5,6 +5,7 @@ import static java.util.Base64.getEncoder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -345,17 +346,34 @@ public class ProjectActivity extends AppCompatActivity {
     }
     public void onBtnPlayPressed(View Caller){
 
-        try {
-            // Create a temporary audio file
-            File tempAudioFile = File.createTempFile("temp_audio", ".m4a", getCacheDir());
+        //byte[] wavArray = pcmToWav(audio,CHANNEL_CONFIG,SAMPLE_RATE,AUDIO_FORMAT);
+        //Log.d("ProjectActivity", "wav array: " + Arrays.toString(wavArray));
+        // Create a temporary audio file
 
-            // Write the byte array to the temporary audio file
-            FileOutputStream fileOutputStream = new FileOutputStream(tempAudioFile);
-            fileOutputStream.write(audio);
-            fileOutputStream.close();
+        //File tempAudioFile = File.createTempFile("temp_audio", ".wav", getDir());
 
-            //Uri myUri = Uri.fromFile(tempAudioFile); // initialize Uri here
-            Uri myUri = Uri.parse("android.resource://" + getPackageName() + "/" + piano);
+        // Write the byte array to the temporary audio file
+        //FileOutputStream fileOutputStream = new FileOutputStream(tempAudioFile);
+        //fileOutputStream.write(wavArray);
+        //fileOutputStream.close();
+        //Log.d("ProjectActivity", "length:" +  String.valueOf(tempAudioFile.length()));
+
+
+        Uri cacheFileUri = getCacheFileUri(context);
+        if (cacheFileUri != null) {
+            try {
+                MediaPlayer mediaPlayer = new MediaPlayer();
+                mediaPlayer.setDataSource(context, cacheFileUri);
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Failed to create cache file.");
+        }
+        /*
+            Uri myUri = Uri.fromFile(tempAudioFile); // initialize Uri here
             MediaPlayer mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioAttributes(
                     new AudioAttributes.Builder()
@@ -367,6 +385,8 @@ public class ProjectActivity extends AppCompatActivity {
             mediaPlayer.prepare();
 
             mediaPlayer.start();
+            */
+
 /*
             // Set the audio file as the data source for the MediaPlayer
             Log.d("projectActivity", "sound file path: " + tempAudioFile.getAbsolutePath());
@@ -386,10 +406,11 @@ public class ProjectActivity extends AppCompatActivity {
                     mp.start();
                 }
             });*/
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+
     }
+
+
 
     @Override
     protected void onDestroy() {
@@ -423,4 +444,106 @@ public class ProjectActivity extends AppCompatActivity {
                     MICROPHONE_PERMISSION_CODE);
         }
     }
+
+    public static byte[] pcmToWav(byte[] pcmData, int numChannels, int sampleRate, int bitPerSample) {
+        byte[] wavData = new byte[pcmData.length + 44];
+        byte[] header = wavHeader(pcmData.length, numChannels, sampleRate, bitPerSample);
+        System.arraycopy(header, 0, wavData, 0, header.length);
+        System.arraycopy(pcmData, 0, wavData, header.length, pcmData.length);
+        return wavData;
+    }
+
+    /**
+     * @param pcmLen pcm数据长度
+     * @param numChannels 声道设置, mono = 1, stereo = 2
+     * @param sampleRate 采样频率
+     * @param bitPerSample 单次数据长度, 例如8bits
+     * @return wav头部信息
+     */
+    public static byte[] wavHeader(int pcmLen, int numChannels, int sampleRate, int bitPerSample) {
+        byte[] header = new byte[44];
+        // ChunkID, RIFF, 占4bytes
+        header[0] = 'R';
+        header[1] = 'I';
+        header[2] = 'F';
+        header[3] = 'F';
+        // ChunkSize, pcmLen + 36, 占4bytes
+        long chunkSize = pcmLen + 36;
+        header[4] = (byte) (chunkSize & 0xff);
+        header[5] = (byte) ((chunkSize >> 8) & 0xff);
+        header[6] = (byte) ((chunkSize >> 16) & 0xff);
+        header[7] = (byte) ((chunkSize >> 24) & 0xff);
+        // Format, WAVE, 占4bytes
+        header[8] = 'W';
+        header[9] = 'A';
+        header[10] = 'V';
+        header[11] = 'E';
+        // Subchunk1ID, 'fmt ', 占4bytes
+        header[12] = 'f';
+        header[13] = 'm';
+        header[14] = 't';
+        header[15] = ' ';
+        // Subchunk1Size, 16, 占4bytes
+        header[16] = 16;
+        header[17] = 0;
+        header[18] = 0;
+        header[19] = 0;
+        // AudioFormat, pcm = 1, 占2bytes
+        header[20] = 1;
+        header[21] = 0;
+        // NumChannels, mono = 1, stereo = 2, 占2bytes
+        header[22] = (byte) numChannels;
+        header[23] = 0;
+        // SampleRate, 占4bytes
+        header[24] = (byte) (sampleRate & 0xff);
+        header[25] = (byte) ((sampleRate >> 8) & 0xff);
+        header[26] = (byte) ((sampleRate >> 16) & 0xff);
+        header[27] = (byte) ((sampleRate >> 24) & 0xff);
+        // ByteRate = SampleRate * NumChannels * BitsPerSample / 8, 占4bytes
+        long byteRate = sampleRate * numChannels * bitPerSample / 8;
+        header[28] = (byte) (byteRate & 0xff);
+        header[29] = (byte) ((byteRate >> 8) & 0xff);
+        header[30] = (byte) ((byteRate >> 16) & 0xff);
+        header[31] = (byte) ((byteRate >> 24) & 0xff);
+        // BlockAlign = NumChannels * BitsPerSample / 8, 占2bytes
+        header[32] = (byte) (numChannels * bitPerSample / 8);
+        header[33] = 0;
+        // BitsPerSample, 占2bytes
+        header[34] = (byte) bitPerSample;
+        header[35] = 0;
+        // Subhunk2ID, data, 占4bytes
+        header[36] = 'd';
+        header[37] = 'a';
+        header[38] = 't';
+        header[39] = 'a';
+        // Subchunk2Size, 占4bytes
+        header[40] = (byte) (pcmLen & 0xff);
+        header[41] = (byte) ((pcmLen >> 8) & 0xff);
+        header[42] = (byte) ((pcmLen >> 16) & 0xff);
+        header[43] = (byte) ((pcmLen >> 24) & 0xff);
+
+        return header;
+    }
+
+    public Uri getCacheFileUri(Context context) {
+        File cacheFile = null;
+        try {
+            cacheFile = File.createTempFile("temp", ".wav", context.getCacheDir());
+            // Write the byte array to the temporary audio file
+            byte[] wavArray = pcmToWav(audio,CHANNEL_CONFIG,SAMPLE_RATE,AUDIO_FORMAT);
+            FileOutputStream fileOutputStream = new FileOutputStream(cacheFile);
+            fileOutputStream.write(wavArray);
+            fileOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (cacheFile != null) {
+
+            return FileProvider.getUriForFile(context, "com.example.lyrics.fileprovider", cacheFile);
+        }
+        return null;
+    }
+
+
 }
