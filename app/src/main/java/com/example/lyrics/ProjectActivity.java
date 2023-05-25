@@ -378,6 +378,7 @@ public class ProjectActivity extends AppCompatActivity {
 
     public void convertToMP4andWriteToDisk(String dataString){
         byte[] data = dataString.getBytes();
+        Log.d("ProjectActivity", "de data in convertToMP4andWriteToDisk: " + Arrays.toString(data));
         try {
             FileOutputStream fos = new FileOutputStream(getRecordingFilePath());
             fos.write(data);
