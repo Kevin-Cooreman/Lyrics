@@ -18,6 +18,7 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.FileUtils;
 import android.util.Log;
@@ -93,11 +94,11 @@ public class ProjectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
         //import all data from Project
-        Project project = getIntent().getParcelableExtra("Project");
         int projectID = getIntent().getIntExtra("projectID", -1);
         setProjectID(projectID);
         Log.d("ProjectActivity", "ProjectID: " + String.valueOf(projectID));
         requestProject();
+
         recyclerView = findViewById(R.id.ProjectView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         if (checkMic()) {
@@ -220,7 +221,6 @@ public class ProjectActivity extends AppCompatActivity {
             outputStream.write("&".getBytes());
             outputStream.write(query.getBytes());
         }
-        Log.d("ProjectActivity", "In request: " +audioData.toString());
 
         int responseCode = connection.getResponseCode();
         // Handle the response code or any other response as needed
@@ -289,9 +289,11 @@ public class ProjectActivity extends AppCompatActivity {
 
 
     public void onBtnRecordPressed(View Caller) {
+        //vraag voor perrmission indien nodig
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            checkMic();
-            getMicPermission();
+            if (checkMic()) {
+                getMicPermission();
+            }
             return;
         }
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT, BUFFER_SIZE);
@@ -308,6 +310,7 @@ public class ProjectActivity extends AppCompatActivity {
                     while (isRecording) {
                         int bytesRead = audioRecord.read(buffer, 0, BUFFER_SIZE);
                         if (bytesRead != AudioRecord.ERROR_INVALID_OPERATION) {
+                            //Log.d("ProjectActivity", String.valueOf(buffer));
                             outputStream.write(buffer, 0, bytesRead);
                         }
                     }
@@ -316,10 +319,9 @@ public class ProjectActivity extends AppCompatActivity {
                         outputStream.close();
                         byte[] audioData = outputStream.toByteArray();
                         setAudio(audioData);
-                        Log.d("ProjectActivity", "byte[]: " + Arrays.toString(audioData));
                         String audioBase64 = getEncoder().encodeToString(audioData);
                         uploadAudio(audioData,projectID);
-                        Log.d("ProjectActivity", "Audio: " + Arrays.toString(audioData));
+                        Log.d("ProjectActivity", "Audio byteArray: " + Arrays.toString(audioData));
                         Log.d("ProjectActivity", "Audio base64: " + audioBase64);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -333,6 +335,7 @@ public class ProjectActivity extends AppCompatActivity {
     public void onBtnStopPressed(View Caller){
         isRecording = false;
 
+
         if (audioRecord != null) {
             audioRecord.stop();
             audioRecord.release();
@@ -344,18 +347,28 @@ public class ProjectActivity extends AppCompatActivity {
 
         try {
             // Create a temporary audio file
-            File tempAudioFile = File.createTempFile("temp_audio", ".wav", getCacheDir());
+            File tempAudioFile = File.createTempFile("temp_audio", ".m4a", getCacheDir());
 
             // Write the byte array to the temporary audio file
             FileOutputStream fileOutputStream = new FileOutputStream(tempAudioFile);
             fileOutputStream.write(audio);
             fileOutputStream.close();
-            mediaPlayer = new MediaPlayer();
-            // Reset the MediaPlayer
-            mediaPlayer.reset();
 
+            //Uri myUri = Uri.fromFile(tempAudioFile); // initialize Uri here
+            Uri myUri = Uri.parse("android.resource://" + getPackageName() + "/" + piano);
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.setAudioAttributes(
+                    new AudioAttributes.Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .build()
+            );
+            mediaPlayer.setDataSource(getApplicationContext(), myUri);
+            mediaPlayer.prepare();
+
+            mediaPlayer.start();
+/*
             // Set the audio file as the data source for the MediaPlayer
-            mediaPlayer.setDataSource(tempAudioFile.getAbsolutePath());
             Log.d("projectActivity", "sound file path: " + tempAudioFile.getAbsolutePath());
 
             // Set the audio attributes for playback
@@ -365,8 +378,6 @@ public class ProjectActivity extends AppCompatActivity {
                     .build();
             mediaPlayer.setAudioAttributes(audioAttributes);
 
-            // Prepare the MediaPlayer asynchronously
-            mediaPlayer.prepareAsync();
 
             // Set the onPreparedListener to start playback when prepared
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -374,7 +385,7 @@ public class ProjectActivity extends AppCompatActivity {
                 public void onPrepared(MediaPlayer mp) {
                     mp.start();
                 }
-            });
+            });*/
         } catch (IOException e) {
             e.printStackTrace();
         }
