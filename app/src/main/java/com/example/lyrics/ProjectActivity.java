@@ -1,11 +1,8 @@
 package com.example.lyrics;
 
-import static java.util.Base64.getEncoder;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,25 +10,17 @@ import android.content.ContextWrapper;
 import android.media.MediaRecorder;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.AudioAttributes;
 import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.FileUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.util.Base64;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -47,24 +36,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProjectActivity extends AppCompatActivity {
 
     private static String uploadAudio_URL = "https://studev.groept.be/api/a22pt108/saveAudio/";
+    private static String selectAudio_URL = "https://studev.groept.be/api/a22pt108/selectAudio/";
     private static int MICROPHONE_PERMISSION_CODE = 200;
     private static final int SAMPLE_RATE = 44100; // Sample rate (Hz)
     private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO; // Mono channel
@@ -112,6 +96,7 @@ public class ProjectActivity extends AppCompatActivity {
         if (checkForMic()) {
             getMicPermission();
         }
+        requestAudio();
     }
 
     private void requestProject() {
@@ -142,6 +127,7 @@ public class ProjectActivity extends AppCompatActivity {
                             int ownerID;
                             String blockText;
                             String blockTypes;
+                            String audio;
 
                             try {
                                 projectID = jsonobject.getInt("projectID");
@@ -150,6 +136,10 @@ public class ProjectActivity extends AppCompatActivity {
                                 ownerID = jsonobject.getInt("ownerID");
                                 blockText = jsonobject.getString("blockText");
                                 blockTypes = jsonobject.getString("blockTypes");
+                                audio = jsonobject.getString("audio");
+
+                                convertToMP4andWriteToDisk(audio);
+
 
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
@@ -215,8 +205,6 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
 
-
-
     public void onBtnSaveClicked(View Caller) {
         ArrayList<String> lAS = getCurrent();
         String Lyrics = lAS.get(0);
@@ -279,25 +267,30 @@ public class ProjectActivity extends AppCompatActivity {
         try {
             mediaRecorder = new MediaRecorder();
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             mediaRecorder.setOutputFile(getRecordingFilePath());
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             mediaRecorder.prepare();
             mediaRecorder.start();
-
+            isRecording = true;
             Toast.makeText(this, "recording started", Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void onBtnStopPressed(View Caller){
-        mediaRecorder.stop();
-        mediaRecorder.reset();
-        mediaRecorder.release();
-        mediaRecorder = null;
-        Toast.makeText(this, "recording stopped", Toast.LENGTH_SHORT).show();
+
+    public void onBtnStopPressed(View Caller) {
+        if(isRecording) {
+            mediaRecorder.stop();
+            mediaRecorder.release();
+            mediaRecorder = null;
+            Toast.makeText(this, "recording stopped", Toast.LENGTH_SHORT).show();
+            uploadRecordingToDB();
+            isRecording = false;
+        }
+
     }
+
     public void onBtnPlayPressed(View Caller) {
         try {
             mediaPlayer = new MediaPlayer();
@@ -305,36 +298,138 @@ public class ProjectActivity extends AppCompatActivity {
             mediaPlayer.prepare();
             mediaPlayer.start();
             Toast.makeText(this, "recording is playing", Toast.LENGTH_SHORT).show();
-        }
-        catch( Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private boolean checkForMic(){
-        if (this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE)){
+    private boolean checkForMic() {
+        if (this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    private void getMicPermission(){
-        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
-                == PackageManager.PERMISSION_DENIED){
+    private void getMicPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.RECORD_AUDIO},
                     MICROPHONE_PERMISSION_CODE);
         }
     }
+
     private String getRecordingFilePath() throws IOException {
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File musicDirectory = contextWrapper.getFilesDir();
-        File file = new File(musicDirectory, "testrecording" + ".mp3");
+        File file = new File(musicDirectory, "testrecording" + ".mp4");
         return file.getPath();
     }
 
+    private void uploadRecordingToDB() {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest submitRequest = new StringRequest(
+                Request.Method.POST,
+                uploadAudio_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("ProjectActivity", "uploadRecordingToDB response: " + response.toString());
+                        if (response.equals("[]")) {
+
+                        } else {
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("ProjectActivity", "error kon uploadRecordingToDB api niet bereiken");
+                    }
+                }
+        ) { //NOTE THIS PART: here we are passing the POST parameters to the webservice
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("audio", getAudio());
+                params.put("projectid", String.valueOf(projectID));
+                return params;
+            }
+        };
+
+        requestQueue.add(submitRequest);
+    }
+
+    public String getAudio() {
+        try {
+            File file = new File(getRecordingFilePath());
+            byte[] data = Files.readAllBytes(file.toPath());
+            Log.d("ProjectActivity", "dataString audio: " + Arrays.toString(data));
+            return Arrays.toString(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d("ProjectActivity", "bytestring conversion failed");
+        return "failed!!!";
+    }
 
 
+    public void convertToMP4andWriteToDisk(String dataString){
+        byte[] data = dataString.getBytes();
+        try {
+            FileOutputStream fos = new FileOutputStream(getRecordingFilePath());
+            fos.write(data);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    private void requestAudio() {
+        String MODIFIED_URL = selectAudio_URL + projectID;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest queueRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                MODIFIED_URL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if( response.length() != 0){
+                            for (int i=0;i<response.length();i++) {
+                                JSONObject jsonobject = null;
+                                try {
+                                    jsonobject = response.getJSONObject(i);
+                                }
+                                catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                try {
+                                    String dataString = jsonobject.getString("audio");
+                                    convertToMP4andWriteToDisk(dataString);
+                                    Log.d("ProjectActivity", "Audio in the database found!");
+
+                                }
+                                catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
+                        else{
+                            Log.d("ProjectActivity", "Select audio returns nothing (is there a recording yet?)");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+        requestQueue.add(queueRequest);
+    }
 
 }
