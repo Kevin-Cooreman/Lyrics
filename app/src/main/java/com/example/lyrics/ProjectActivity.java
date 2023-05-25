@@ -1,5 +1,7 @@
 package com.example.lyrics;
 
+import static java.util.Base64.getEncoder;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -10,14 +12,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioAttributes;
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.util.Base64;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,6 +40,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -40,7 +49,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Base64;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,6 +65,8 @@ public class ProjectActivity extends AppCompatActivity {
 
     private AudioRecord audioRecord;
     private boolean isRecording = false;
+    private byte[] audio;
+    private MediaPlayer mediaPlayer;
     private TextView title;
     private int projectID;
     private String selectProjectURL = "https://studev.groept.be/api/a22pt108/selectProjectWithID/";
@@ -219,6 +230,8 @@ public class ProjectActivity extends AppCompatActivity {
         connection.disconnect();
     }
 
+
+
     public void onBtnSaveClicked(View Caller) {
         ArrayList<String> lAS = getCurrent();
         String Lyrics = lAS.get(0);
@@ -304,9 +317,12 @@ public class ProjectActivity extends AppCompatActivity {
                     try {
                         outputStream.close();
                         byte[] audioData = outputStream.toByteArray();
+                        setAudio(audioData);
+                        Log.d("ProjectActivity", "byte[]: " + Arrays.toString(audioData));
+                        String audioBase64 = getEncoder().encodeToString(audioData);
                         uploadAudio(audioData,projectID);
-                        Log.d("ProjectActivity", "In request: " +audioData.toString());
-                        Log.d("ProjectActivity", "In request: " + Base64.getEncoder().encodeToString(audioData));
+                        Log.d("ProjectActivity", "Audio: " + Arrays.toString(audioData));
+                        Log.d("ProjectActivity", "Audio base64: " + audioBase64);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -328,6 +344,57 @@ public class ProjectActivity extends AppCompatActivity {
     }
     public void onBtnPlayPressed(View Caller){
 
+        try {
+            // Create a temporary audio file
+            File tempAudioFile = File.createTempFile("temp_audio", ".wav", getCacheDir());
+
+            // Write the byte array to the temporary audio file
+            FileOutputStream fileOutputStream = new FileOutputStream(tempAudioFile);
+            fileOutputStream.write(audio);
+            fileOutputStream.close();
+            mediaPlayer = new MediaPlayer();
+            // Reset the MediaPlayer
+            mediaPlayer.reset();
+
+            // Set the audio file as the data source for the MediaPlayer
+            mediaPlayer.setDataSource(tempAudioFile.getAbsolutePath());
+            Log.d("projectActivity", "sound file path: " + tempAudioFile.getAbsolutePath());
+
+            // Set the audio attributes for playback
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build();
+            mediaPlayer.setAudioAttributes(audioAttributes);
+
+            // Prepare the MediaPlayer asynchronously
+            mediaPlayer.prepareAsync();
+
+            // Set the onPreparedListener to start playback when prepared
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Release the MediaPlayer resources
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    public void setAudio(byte[] audio) {
+        this.audio = audio;
     }
 
     private boolean checkMic(){
