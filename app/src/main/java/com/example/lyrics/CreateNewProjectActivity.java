@@ -103,6 +103,7 @@ public class CreateNewProjectActivity extends AppCompatActivity {
                 params.put("title", project.getTitle());
                 params.put("description", project.getDescription());
                 params.put("owner", String.valueOf(userID));
+                params.put("sharedid","0;");
                 return params;
             }
         };

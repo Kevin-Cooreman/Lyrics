@@ -103,8 +103,6 @@ public class ProjectActivity extends AppCompatActivity {
         if (checkMic()) {
             getMicPermission();
         }
-
-
     }
 
     private void requestProject() {
