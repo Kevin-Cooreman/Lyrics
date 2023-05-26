@@ -377,7 +377,13 @@ public class ProjectActivity extends AppCompatActivity {
 
 
     public void convertToMP4andWriteToDisk(String dataString){
-        byte[] data = dataString.getBytes();
+        dataString = dataString.substring(1,dataString.length() -1);
+        String[] byteValues = dataString.split(", ");
+        byte[] data = new byte[byteValues.length];
+        for (int i = 0; i < byteValues.length; i++){
+            data[i] = Byte.parseByte(byteValues[i]);
+        }
+
         Log.d("ProjectActivity", "de data in convertToMP4andWriteToDisk: " + Arrays.toString(data));
         try {
             FileOutputStream fos = new FileOutputStream(getRecordingFilePath());
@@ -412,6 +418,7 @@ public class ProjectActivity extends AppCompatActivity {
                                     String dataString = jsonobject.getString("audio");
                                     convertToMP4andWriteToDisk(dataString);
                                     Log.d("ProjectActivity", "Audio in the database found!");
+                                    Log.d("ProjectActivity","Data from DB:" + dataString);
 
                                 }
                                 catch (JSONException e) {
