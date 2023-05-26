@@ -96,7 +96,7 @@ public class ProjectActivity extends AppCompatActivity {
         if (checkForMic()) {
             getMicPermission();
         }
-        requestAudio();
+        //requestAudio();
     }
 
     private void requestProject() {
@@ -377,67 +377,26 @@ public class ProjectActivity extends AppCompatActivity {
 
 
     public void convertToMP4andWriteToDisk(String dataString){
-        dataString = dataString.substring(1,dataString.length() -1);
-        String[] byteValues = dataString.split(", ");
-        byte[] data = new byte[byteValues.length];
-        for (int i = 0; i < byteValues.length; i++){
-            data[i] = Byte.parseByte(byteValues[i]);
+        if(dataString == "null"){
+
+        }
+        else {
+            dataString = dataString.substring(1, dataString.length() - 1);
+            String[] byteValues = dataString.split(", ");
+            byte[] data = new byte[byteValues.length];
+            for (int i = 0; i < byteValues.length; i++) {
+                data[i] = Byte.parseByte(byteValues[i]);
+            }
+
+            Log.d("ProjectActivity", "de data in convertToMP4andWriteToDisk: " + Arrays.toString(data));
+            try {
+                FileOutputStream fos = new FileOutputStream(getRecordingFilePath());
+                fos.write(data);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        Log.d("ProjectActivity", "de data in convertToMP4andWriteToDisk: " + Arrays.toString(data));
-        try {
-            FileOutputStream fos = new FileOutputStream(getRecordingFilePath());
-            fos.write(data);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-    private void requestAudio() {
-        String MODIFIED_URL = selectAudio_URL + projectID;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest queueRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                MODIFIED_URL,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        if( response.length() != 0){
-                            for (int i=0;i<response.length();i++) {
-                                JSONObject jsonobject = null;
-                                try {
-                                    jsonobject = response.getJSONObject(i);
-                                }
-                                catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                try {
-                                    String dataString = jsonobject.getString("audio");
-                                    convertToMP4andWriteToDisk(dataString);
-                                    Log.d("ProjectActivity", "Audio in the database found!");
-                                    Log.d("ProjectActivity","Data from DB:" + dataString);
-
-                                }
-                                catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        }
-                        else{
-                            Log.d("ProjectActivity", "Select audio returns nothing (is there a recording yet?)");
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                });
-        requestQueue.add(queueRequest);
     }
 
 }
