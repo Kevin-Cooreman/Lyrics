@@ -138,12 +138,27 @@ public class ProjectActivity extends AppCompatActivity {
                                 blockTypes = jsonobject.getString("blockTypes");
                                 audio = jsonobject.getString("audio");
 
-                                convertToMP4andWriteToDisk(audio);
 
 
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
+
+                            if(audio.equals("null")){
+                                try {
+                                    File file = new File(getRecordingFilePath());
+                                    if(file.exists()){
+                                        file.delete();
+                                    }
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                            else{
+                                convertToMP4andWriteToDisk(audio);
+                            }
+
+
                             Project project = new Project(projectID, projectName, description, ownerID, blockText, blockTypes);
 
                             setProject(project);
