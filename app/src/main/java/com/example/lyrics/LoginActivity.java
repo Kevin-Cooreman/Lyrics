@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -64,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 try {
                                     int id = jsonobject.getInt("id");
+                                    Log.d("LoginAcitivty:", "userID; " + id);
                                     successfulLogin(id);
                                 }
                                 catch (JSONException e) {

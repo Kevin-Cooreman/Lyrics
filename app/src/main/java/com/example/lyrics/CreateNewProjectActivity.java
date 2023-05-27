@@ -71,7 +71,6 @@ public class CreateNewProjectActivity extends AppCompatActivity {
     }
 
     private void addNewProject() {
-
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest submitRequest = new StringRequest(
                 Request.Method.POST,
@@ -79,6 +78,7 @@ public class CreateNewProjectActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("CreateNewProjectActivity", "addNewProject response: " + response);
                         if( response.equals("[]")){
                             //success
                             //ga verder

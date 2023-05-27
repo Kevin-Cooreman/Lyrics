@@ -31,10 +31,8 @@ public class ProjectsListActivity extends AppCompatActivity {
 
     String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectAllProjectsFromUser/";
     String sharedProjectsURL = "https://studev.groept.be/api/a22pt108/getSharedProjects/";
-    //String DescriptionsURL = "https://studev.groept.be/api/a22pt108/selectDescriptionsFromUser/";
     int UserID;
     RecyclerView recyclerView;
-
     Context context = this;
 
 
@@ -155,6 +153,7 @@ public class ProjectsListActivity extends AppCompatActivity {
                         }
                         ProjectsListAdapter projectsListAdapter = new ProjectsListAdapter(context, ProjectTitles, ProjectDescriptions, ProjectID);
                         recyclerView.setAdapter(projectsListAdapter);
+                        recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 },
                 new Response.ErrorListener() {
