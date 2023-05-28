@@ -3,12 +3,9 @@ package com.example.lyrics;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,8 +20,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +55,7 @@ public class CreateNewProjectActivity extends AppCompatActivity {
         String description = descEditText.getText().toString();
         if(title.length() == 0 || description.length() == 0){
             TextView theView = (TextView) findViewById(R.id.createNewProjectErrorMsg);
-            theView.setText("fields can't be empty");
+            theView.setText(getString(R.string.emptyFields));
             theView.setVisibility(View.VISIBLE);
         }
         else{
@@ -96,7 +91,7 @@ public class CreateNewProjectActivity extends AppCompatActivity {
                         Log.d("CreateNewProjectActivity", "unable to connect to the api");
                     }
                 }
-        ) { //NOTE THIS PART: here we are passing the POST parameters to the webservice
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

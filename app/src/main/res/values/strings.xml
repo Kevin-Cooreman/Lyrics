@@ -14,7 +14,11 @@
 
     <string name="loginErrorMessage">Incorrect username password combination.</string>
     <string name="usernameAlreadyExists">Username already exists! Choose something else</string>
-    <string name="debug">kaolo je zit hier</string>
+    <string name="fillUsernameFirst">fill in a username first</string>
+    <string name= "fillUsernameAndPassword">fill in a username and password first</string>
+    <string name="error">something bad happend</string>
+    <string name="usernameTaken">username is already taken</string>
+    <string name="emptyFields">the fields cannot be empty</string>
 
     <string name="newProjectNameText">New Project Title</string>
     <string name="newProjectDescriptionText">Description</string>

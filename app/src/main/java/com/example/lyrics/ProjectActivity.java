@@ -47,25 +47,18 @@ import java.util.Map;
 
 public class ProjectActivity extends AppCompatActivity {
 
-    private static String uploadAudio_URL = "https://studev.groept.be/api/a22pt108/saveAudio/";
-    private static String selectAudio_URL = "https://studev.groept.be/api/a22pt108/selectAudio/";
-    private static int MICROPHONE_PERMISSION_CODE = 200;
-    private static final int SAMPLE_RATE = 44100; // Sample rate (Hz)
-    private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO; // Mono channel
-    private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT; // 16-bit PCM encoding
-    private static final int BUFFER_SIZE = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT);
+    private static final String uploadAudio_URL = "https://studev.groept.be/api/a22pt108/saveAudio/";
+    private static final int MICROPHONE_PERMISSION_CODE = 200;
 
-    private AudioRecord audioRecord;
     private MediaRecorder mediaRecorder;
     private boolean isRecording = false;
-    private byte[] audio;
     private MediaPlayer mediaPlayer;
     private TextView title;
     private int projectID;
-    private String selectProjectURL = "https://studev.groept.be/api/a22pt108/selectProjectWithID/";
+    private final String selectProjectURL = "https://studev.groept.be/api/a22pt108/selectProjectWithID/";
     private Context context = this;
     private Project project;
-    private String saveURL = "https://studev.groept.be/api/a22pt108/UpdateBlocks";
+    private final String saveURL = "https://studev.groept.be/api/a22pt108/UpdateBlocks";
     private ProjectAdapter projectAdapter;
 
 
@@ -78,8 +71,7 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     RecyclerView recyclerView;
-    ArrayList<String> sentences;
-    ArrayList<String> blockTypesArray;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +80,7 @@ public class ProjectActivity extends AppCompatActivity {
         //import all data from Project
         int projectID = getIntent().getIntExtra("projectID", -1);
         setProjectID(projectID);
-        Log.d("ProjectActivity", "ProjectID: " + String.valueOf(projectID));
+        Log.d("ProjectActivity", "ProjectID: " + projectID);
         requestProject();
 
         recyclerView = findViewById(R.id.ProjectView);
@@ -96,7 +88,6 @@ public class ProjectActivity extends AppCompatActivity {
         if (checkForMic()) {
             getMicPermission();
         }
-        //requestAudio();
     }
 
     private void requestProject() {
@@ -162,7 +153,7 @@ public class ProjectActivity extends AppCompatActivity {
                             Project project = new Project(projectID, projectName, description, ownerID, blockText, blockTypes);
 
                             setProject(project);
-                            Log.d("ProjectActivity", "In request: " + project.toString());
+                            Log.d("ProjectActivity", "In request: " + project);
                             projectAdapter = new ProjectAdapter(context, project, project.getSentences(), project.getBlockTypesSplit());
                             recyclerView.setAdapter(projectAdapter);
                             title = findViewById(R.id.ProjectTitleView);
@@ -191,12 +182,7 @@ public class ProjectActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response.equals("[]")) {
-
-                        } else {
-
-                        }
-
+                        Log.d("ProjectActivity", "requestSave response: " + response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -205,7 +191,7 @@ public class ProjectActivity extends AppCompatActivity {
 
                     }
                 }
-        ) { //NOTE THIS PART: here we are passing the POST parameters to the webservice
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -237,8 +223,8 @@ public class ProjectActivity extends AppCompatActivity {
             View itemView = recyclerView.getLayoutManager().findViewByPosition(i);
             if (itemView != null) {
 
-                TextInputEditText lyricsEditText = itemView.findViewById(R.id.LyricsTxt); // Replace R.id.LyricsTxt with the ID of your EditText in each row
-                Spinner sectionsSpinner = itemView.findViewById(R.id.SectionsSp); // Replace R.id.SectionsSp with the ID of your Spinner in each row
+                TextInputEditText lyricsEditText = itemView.findViewById(R.id.LyricsTxt);
+                Spinner sectionsSpinner = itemView.findViewById(R.id.SectionsSp);
 
                 String lyricsText = String.valueOf(lyricsEditText.getText());
                 String modifiedText = lyricsText.replace(" ", "_") + ";";
@@ -350,12 +336,7 @@ public class ProjectActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("ProjectActivity", "uploadRecordingToDB response: " + response.toString());
-                        if (response.equals("[]")) {
-
-                        } else {
-
-                        }
+                        Log.d("ProjectActivity", "uploadRecordingToDB response: " + response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -364,7 +345,7 @@ public class ProjectActivity extends AppCompatActivity {
                         Log.d("ProjectActivity", "error kon uploadRecordingToDB api niet bereiken");
                     }
                 }
-        ) { //NOTE THIS PART: here we are passing the POST parameters to the webservice
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -392,7 +373,7 @@ public class ProjectActivity extends AppCompatActivity {
 
 
     public void convertToMP4andWriteToDisk(String dataString){
-        if(dataString == "null"){
+        if(dataString.equals("null")){
 
         }
         else {

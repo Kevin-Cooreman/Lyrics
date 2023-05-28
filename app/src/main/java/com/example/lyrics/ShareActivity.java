@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,8 +26,8 @@ import java.util.Map;
 public class ShareActivity extends AppCompatActivity {
 
     private int projectID;
-    private String userID_URL = "https://studev.groept.be/api/a22pt108/checkIfUsernameIsInUse/";
-    private String SHARE_URL = "https://studev.groept.be/api/a22pt108/shareProject/";
+    private final String userID_URL = "https://studev.groept.be/api/a22pt108/checkIfUsernameIsInUse/";
+    private final String SHARE_URL = "https://studev.groept.be/api/a22pt108/shareProject/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class ShareActivity extends AppCompatActivity {
         String username = usernameEditText.getText().toString();
         if(username.length() == 0) {
             TextView error = (TextView) findViewById(R.id.shareErrormsgTxt);
-            error.setText("fill in a username first");
+            error.setText(getString(R.string.fillUsernameFirst));
             error.setVisibility(View.VISIBLE);
         }
         else {
@@ -126,7 +125,7 @@ public class ShareActivity extends AppCompatActivity {
 
                     }
                 }
-        ) { //NOTE THIS PART: here we are passing the POST parameters to the webservice
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

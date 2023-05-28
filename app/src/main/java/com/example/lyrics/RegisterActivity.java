@@ -7,17 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString();
         if(username.length() == 0 || password.length() == 0) {
             TextView theView = (TextView) findViewById(R.id.tempTextRegister);
-            theView.setText("fill in a username and password first");
+            theView.setText(getString(R.string.fillUsernameAndPassword));
             theView.setVisibility(View.VISIBLE);
         }
         else {
@@ -62,22 +58,16 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if( response.equals("[]")){
-                            //debug
-                            //TextView theView = (TextView) findViewById(R.id.tempTextRegister);
-                            //theView.setText("het werkt");
-                            //theView.setVisibility(View.VISIBLE);
                             successfulRegister();
                         }
                         else {
                             TextView theView = (TextView) findViewById(R.id.tempTextRegister);
-                            //debug
-                            //theView.setText(Integer.toString(response.length()));
                             if(response.contains("Duplicate entry")){
-                                theView.setText("Username already taken");
+                                theView.setText(getString(R.string.usernameTaken));
                                 theView.setVisibility(View.VISIBLE);
                             }
                             else{
-                                theView.setText("Something bad happened");
+                                theView.setText(getString(R.string.error));
                                 theView.setVisibility(View.VISIBLE);
                             }
                         }
@@ -93,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                         theView.setVisibility(View.VISIBLE);
                     }
                 }
-        ) { //NOTE THIS PART: here we are passing the POST parameters to the webservice
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

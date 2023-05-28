@@ -6,18 +6,13 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 public class Project implements Parcelable {
 
     private String title;
     private String description;
-    private ArrayList<String> blockListTypes;
-    private ArrayList<String> blockListLyrics;
     private int projectID;
-    private int Blocks;
     private int ownerID;
     private ArrayList<String> sentences;
     private ArrayList<String> blockTypesSplit;
@@ -40,10 +35,6 @@ public class Project implements Parcelable {
 
     }
 
-    public void addBlock(String type){
-        blockListTypes.add("type");
-    }
-
     //getters
     public String getTitle() {
         return title;
@@ -51,23 +42,6 @@ public class Project implements Parcelable {
 
     public String getDescription() {
         return description;
-    }
-
-    public ArrayList<String> getBlockListTypes() {
-        return blockListTypes;
-    }
-
-    public ArrayList<String> getBlockListLyrics() {
-        return blockListLyrics;
-    }
-    public int getProjectID(){ return projectID;}
-
-    public int getBlocks() {
-        return Blocks;
-    }
-
-    public int getOwnerID() {
-        return ownerID;
     }
 
     public ArrayList<String> getSentences() {
