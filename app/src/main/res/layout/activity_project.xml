@@ -32,25 +32,23 @@
         android:id="@+id/SaveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="onBtnSaveClicked"
         android:text="@string/SaveBtn"
-        app2:layout_constraintBottom_toTopOf="@+id/stopPlayBtn"
+        app2:layout_constraintBottom_toTopOf="@+id/playBtn"
         app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintHorizontal_bias="0.5"
-        app2:layout_constraintStart_toEndOf="@+id/AddBlockBtn" />
+        app2:layout_constraintStart_toEndOf="@+id/removeBlockBtn" />
 
     <Button
         android:id="@+id/AddBlockBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="onBtnPlusClicked"
         android:text="@string/addProjectBtn"
-        app2:layout_constraintBottom_toTopOf="@+id/playBtn"
-        app2:layout_constraintEnd_toStartOf="@+id/SaveBtn"
+        app2:layout_constraintBottom_toTopOf="@+id/stopRecordBtn"
+        app2:layout_constraintEnd_toStartOf="@+id/removeBlockBtn"
         app2:layout_constraintHorizontal_bias="0.5"
         app2:layout_constraintStart_toEndOf="@+id/shareBtn" />
 
@@ -74,7 +72,7 @@
         android:onClick="onBtnPlayPressed"
         android:text="@string/playBtn"
         app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintEnd_toStartOf="@+id/stopPlayBtn"
+        app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintHorizontal_bias="0.5"
         app2:layout_constraintStart_toEndOf="@+id/stopRecordBtn" />
 
@@ -91,15 +89,16 @@
         app2:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/stopPlayBtn"
+        android:id="@+id/removeBlockBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="onBtnMinusClicked"
         android:text="@string/stopPlayBtn"
-        app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintBottom_toTopOf="@+id/stopRecordBtn"
+        app2:layout_constraintEnd_toStartOf="@+id/SaveBtn"
         app2:layout_constraintHorizontal_bias="0.5"
-        app2:layout_constraintStart_toEndOf="@+id/playBtn" />
+        app2:layout_constraintStart_toEndOf="@+id/AddBlockBtn" />
 
     <Button
         android:id="@+id/stopRecordBtn"

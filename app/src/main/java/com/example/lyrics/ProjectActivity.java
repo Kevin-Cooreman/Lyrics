@@ -257,6 +257,51 @@ public class ProjectActivity extends AppCompatActivity {
         recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
     }
 
+    public void onBtnMinusClicked(View Caller) {
+
+        ArrayList<String> lAS = getCurrent();
+        String Lyrics = lAS.get(0);
+        String sections = lAS.get(1);
+
+        String s1 = new String();
+        String l1 = new String();
+
+        int i = projectAdapter.getItemCount()-1;
+        View itemView = recyclerView.getLayoutManager().findViewByPosition(i);
+        TextInputEditText lyricsEditText = itemView.findViewById(R.id.LyricsTxt);
+        Spinner sectionsSpinner = itemView.findViewById(R.id.SectionsSp);
+
+        String withoutLyrics = Lyrics.substring(0, Lyrics.length() - 3);
+        String withLyrics =  Lyrics.substring(0,Lyrics.length() -(lyricsEditText.getText().length()+1));
+
+        if(sectionsSpinner.getSelectedItem() == null){
+            s1 = sections.substring(0,sections.length()-3);
+            if(lyricsEditText.getText() != null && lyricsEditText.getText().length()>0){
+                l1 = withLyrics;
+            }
+            else {
+                l1 = withoutLyrics;
+            }
+        }
+        else {
+            s1 = sections.substring(0,sections.length()- (sectionsSpinner.getSelectedItem().toString().length()+1));
+            if(lyricsEditText.getText() != null && lyricsEditText.getText().length()>0){
+                l1 = withLyrics;
+            }
+            else {
+                l1 = withoutLyrics;
+            }
+        }
+
+        project.setBlockListLyrics(l1);
+        project.setBlockListTypes(s1);
+        requestSave(l1, s1, projectID);
+        recyclerView.requestLayout();
+        recyclerView.invalidate();
+        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+
+    }
+
     public void onBtnShareClicked(View Caller) {
         Intent intent = new Intent(this, ShareActivity.class);
         intent.putExtra("projectID", projectID);
