@@ -51,8 +51,6 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
         holder.Types.setSelection(index);
     }
 
-
-
     @Override
     public int getItemCount() {
         if (textBlocks.size() == 0){

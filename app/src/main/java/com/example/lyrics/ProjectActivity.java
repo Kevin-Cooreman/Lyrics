@@ -13,8 +13,6 @@ import android.media.MediaRecorder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.AudioFormat;
-import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -437,7 +435,5 @@ public class ProjectActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
     }
-
 }
