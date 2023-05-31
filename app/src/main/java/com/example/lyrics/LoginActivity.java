@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    String LOGIN_URL = "https://studev.groept.be/api/a22pt108/loginrequest/";
+    private final String LOGIN_URL = "https://studev.groept.be/api/a22pt108/loginrequest/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

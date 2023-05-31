@@ -16,10 +16,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHolder> {
-    Context context;
-    Project project;
-    ArrayList<String> textBlocks;
-    ArrayList<String> types;
+    private Context context;
+    private Project project;
+    private ArrayList<String> textBlocks;
+    private ArrayList<String> types;
 
     public ProjectAdapter(Context context, Project project, ArrayList<String> Lyrics, ArrayList<String> sections){
         this.context = context;

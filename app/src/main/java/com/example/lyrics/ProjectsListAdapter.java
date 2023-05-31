@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 public class ProjectsListAdapter extends RecyclerView.Adapter<ProjectsListAdapter.MyViewHolder> {
 
-    ArrayList<String> titles;
-    ArrayList<String> descriptions;
-    ArrayList<Integer> projectIDs;
-    Context context;
+    private ArrayList<String> titles;
+    private ArrayList<String> descriptions;
+    private ArrayList<Integer> projectIDs;
+    private Context context;
 
     public ProjectsListAdapter(Context context,ArrayList<String> Titles, ArrayList<String> Descriptions, ArrayList<Integer>projectIDs){
         this.titles = Titles;

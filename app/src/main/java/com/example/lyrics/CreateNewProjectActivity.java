@@ -25,11 +25,11 @@ import java.util.Map;
 
 public class CreateNewProjectActivity extends AppCompatActivity {
 
-    String addProjectUrl = "https://studev.groept.be/api/a22pt108/addNewProject/";
-    String getLatestProjectFromUserUrl = "https://studev.groept.be/api/a22pt108/getLatestProjectFromUser/";
-    int userID;
-    int ProjectID;
-    Project project;
+    private final String addProjectUrl = "https://studev.groept.be/api/a22pt108/addNewProject/";
+    private final String getLatestProjectFromUserUrl = "https://studev.groept.be/api/a22pt108/getLatestProjectFromUser/";
+    private int userID;
+    private int ProjectID;
+    private Project project;
 
 
     @Override

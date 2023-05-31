@@ -22,7 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-    String REGISTER_URL = "https://studev.groept.be/api/a22pt108/registerrequest";
+    private final String REGISTER_URL = "https://studev.groept.be/api/a22pt108/registerrequest";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

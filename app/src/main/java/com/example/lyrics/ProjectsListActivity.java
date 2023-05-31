@@ -24,15 +24,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ProjectsListActivity extends AppCompatActivity {
-    ArrayList<Integer> ProjectID = new ArrayList<>();
-    ArrayList<String> ProjectTitles = new ArrayList<>();
-    ArrayList<String> ProjectDescriptions = new ArrayList<>();
+    private ArrayList<Integer> ProjectID = new ArrayList<>();
+    private ArrayList<String> ProjectTitles = new ArrayList<>();
+    private ArrayList<String> ProjectDescriptions = new ArrayList<>();
 
-    String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectAllProjectsFromUser/";
-    String sharedProjectsURL = "https://studev.groept.be/api/a22pt108/getSharedProjects/";
-    int UserID;
-    RecyclerView recyclerView;
-    Context context = this;
+    private final String ProjectsURL = "https://studev.groept.be/api/a22pt108/selectAllProjectsFromUser/";
+    private final String sharedProjectsURL = "https://studev.groept.be/api/a22pt108/getSharedProjects/";
+    private int UserID;
+    private RecyclerView recyclerView;
+    private Context context = this;
 
 
     @Override
